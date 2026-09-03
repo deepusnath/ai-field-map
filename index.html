@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive survey map of the AI and ML landscape: seven clickable territories, 224 tagged terms, and a reading-level switch for newcomers and practitioners. An instrument of Capability Commons.">
+<meta property="og:title" content="The AI Field Map">
+<meta property="og:description" content="Seven territories, 224 tagged terms, two reading levels. An instrument of Capability Commons.">
+<meta property="og:type" content="website">
+<style>
+:root{color-scheme:light dark}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<title>The AI Field Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ── tokens ─────────────────────────────────────────────── */
+:root{
+  --paper:#E7EBE3; --sheet:#F5F7F1; --sheet2:#FBFCF9; --sunk:#DDE3D8;
+  --ink:#15201A; --ink2:#4B594F; --ink3:#5C6860;
+  --rule:#C6D0C1; --rule2:#D9E0D4;
+  --accent:#BF4E1C; --accent-ink:#8E3910; --accent-wash:#F2DCCE; --on-accent:#FFFFFF;
+  --h-ai:#4F7391; --h-ml:#557F52; --h-dl:#A5762A;
+  --h-types:#735A8C; --h-blocks:#9A5038; --h-apps:#256F68; --h-journey:#BF4E1C;
+  --shadow:0 1px 2px rgba(21,32,26,.06), 0 8px 24px -14px rgba(21,32,26,.28);
+  --f-disp:"Zilla Slab",Georgia,"Times New Roman",serif;
+  --f-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1512; --sheet:#161E1A; --sheet2:#1C2621; --sunk:#111815;
+    --ink:#DCE4DA; --ink2:#9CAAA1; --ink3:#8A9990;
+    --rule:#2E3A33; --rule2:#242F29;
+    --accent:#E4783F; --accent-ink:#F0996A; --accent-wash:#3A2317; --on-accent:#1A1310; --on-accent:#1A1310;
+    --h-ai:#82A9C6; --h-ml:#7FB579; --h-dl:#D3A44E;
+    --h-types:#A288BC; --h-blocks:#C9836A; --h-apps:#4FA79C; --h-journey:#E4783F;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1512; --sheet:#161E1A; --sheet2:#1C2621; --sunk:#111815;
+  --ink:#DCE4DA; --ink2:#9CAAA1; --ink3:#8A9990;
+  --rule:#2E3A33; --rule2:#242F29;
+  --accent:#E4783F; --accent-ink:#F0996A; --accent-wash:#3A2317; --on-accent:#1A1310;
+  --h-ai:#82A9C6; --h-ml:#7FB579; --h-dl:#D3A44E;
+  --h-types:#A288BC; --h-blocks:#C9836A; --h-apps:#4FA79C; --h-journey:#E4783F;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.8);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--f-body); font-size:15.5px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-disp); font-weight:600; margin:0; text-wrap:balance; line-height:1.2}
+p{margin:0}
+button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+.mono{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+
+/* ── page frame ─────────────────────────────────────────── */
+.wrap{max-width:1500px; margin:0 auto; padding:0 20px 64px}
+
+.masthead{
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:18px 28px;
+  padding:26px 0 18px; border-bottom:1px solid var(--rule);
+}
+.brand{display:flex; flex-direction:column; gap:5px; min-width:250px}
+.brand h1{
+  font-size:clamp(25px,3.1vw,34px); letter-spacing:.055em; text-transform:uppercase;
+  font-weight:700;
+}
+.brand .sub{color:var(--ink2); font-size:14px; max-width:52ch}
+.sheetline{
+  font-family:var(--f-mono); font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink3);
+  display:flex; align-items:center; gap:9px;
+}
+.sheetline::after{content:""; flex:1; height:1px; background:var(--rule); min-width:20px}
+@media (max-width:700px){.sheetline::after{display:none}}
+
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-left:auto}
+.ctl{display:flex; flex-direction:column; gap:6px}
+.ctl-label{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ink3);
+}
+
+/* depth switch */
+.switch{display:flex; border:1px solid var(--rule); border-radius:3px; overflow:hidden; background:var(--sheet)}
+.switch button{
+  padding:7px 14px; font-size:12.5px; font-weight:600; letter-spacing:.02em;
+  color:var(--ink2); position:relative;
+}
+.switch button + button{border-left:1px solid var(--rule)}
+.switch button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent)}
+.switch button:not([aria-pressed="true"]):hover{background:var(--sunk); color:var(--ink)}
+
+/* search */
+.searchbox{position:relative; width:min(320px,72vw)}
+.searchbox input{
+  width:100%; padding:8px 32px 8px 11px; font:inherit; font-size:13.5px;
+  background:var(--sheet); color:var(--ink);
+  border:1px solid var(--rule); border-radius:3px;
+}
+.searchbox input::placeholder{color:var(--ink3)}
+.searchbox input:focus{outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent)}
+.searchbox .hint{
+  position:absolute; right:9px; top:50%; transform:translateY(-50%);
+  font-family:var(--f-mono); font-size:10px; color:var(--ink3); pointer-events:none;
+}
+.results{
+  position:absolute; z-index:40; top:calc(100% + 5px); left:0; right:0;
+  background:var(--sheet2); border:1px solid var(--rule); border-radius:3px;
+  box-shadow:var(--shadow); max-height:340px; overflow-y:auto; padding:4px;
+}
+.results button{
+  display:flex; width:100%; gap:9px; align-items:baseline; text-align:left;
+  padding:7px 9px; border-radius:2px; line-height:1.35;
+}
+.results button:hover,.results button.cursor{background:var(--sunk)}
+.results .rn{font-weight:600; font-size:13.5px}
+.results .rr{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink3); margin-left:auto; white-space:nowrap;
+}
+.results .empty{padding:12px 10px; color:var(--ink3); font-size:13px}
+
+/* ── main grid ──────────────────────────────────────────── */
+.grid{display:grid; grid-template-columns:minmax(0,1fr); gap:24px; margin-top:22px; align-items:start}
+/* Two columns once the map still renders legibly beside the gazetteer. The map
+   takes the larger share, and --mls scales its labels back up to compensate for
+   the smaller viewBox (SVG type is in user units, so it shrinks with the map). */
+@media (min-width:1120px){
+  .grid{grid-template-columns:minmax(0,1.55fr) minmax(360px,1fr)}
+  .map{--mls:1.12}
+}
+
+.card{background:var(--sheet); border:1px solid var(--rule); border-radius:4px; box-shadow:var(--shadow)}
+
+/* ── map ────────────────────────────────────────────────── */
+.mapwrap{padding:12px}
+.mapscroll{overflow-x:auto; overflow-y:hidden}
+.mapscroll svg{display:block; width:100%; min-width:600px; height:auto}
+
+.frame{fill:none; stroke:var(--rule); stroke-width:1}
+.grat{stroke:var(--rule2); stroke-width:.6}
+.contour{fill:none; stroke:var(--rule); stroke-width:.7; opacity:.5}
+.tick{stroke:var(--rule); stroke-width:1}
+.furniture{fill:var(--ink3); font-family:var(--f-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase}
+
+.region{cursor:pointer; transition:opacity .22s ease}
+.region .shape{
+  fill:var(--rc); fill-opacity:.09; stroke:var(--rc); stroke-width:1.4;
+  transition:fill-opacity .2s ease, stroke-width .2s ease;
+}
+.region:hover .shape{fill-opacity:.2}
+.region .plate{
+  fill:var(--rc); font-family:var(--f-disp); font-weight:700;
+  letter-spacing:.13em; text-transform:uppercase; text-anchor:middle;
+  font-size:calc(var(--ps,14) * var(--mls,1) * 1px);
+}
+.region .gloss{
+  fill:var(--ink2); font-family:var(--f-body); font-size:calc(13 * var(--mls,1) * 1px);
+  text-anchor:middle; font-style:italic;
+}
+.region .code{
+  fill:var(--ink3); font-family:var(--f-mono); font-size:calc(10.5 * var(--mls,1) * 1px);
+  letter-spacing:.14em; text-anchor:middle;
+}
+.region .trig{fill:var(--rc); opacity:.85}
+.region:focus{outline:none}
+.region:focus-visible .shape{stroke-width:2.6; stroke-dasharray:5 3}
+.map.picked .region{opacity:.34}
+.map.picked .region.on{opacity:1}
+.region.on .shape{fill-opacity:.24; stroke-width:2.4}
+.selring{fill:none; stroke:var(--accent); stroke-width:1.6; stroke-dasharray:4 4; opacity:0; transition:opacity .2s ease}
+.region.on .selring{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .region,.region .shape,.selring{transition:none}
+}
+
+.route{fill:none; stroke:var(--h-journey); stroke-width:1.8; stroke-dasharray:7 5; opacity:.9}
+.routedot{fill:var(--sheet); stroke:var(--h-journey); stroke-width:1.6}
+.routelabel{fill:var(--ink2); font-family:var(--f-mono); font-size:calc(9.5 * var(--mls,1) * 1px); letter-spacing:.1em; text-transform:uppercase; text-anchor:middle}
+
+/* chip rail under map */
+.rail{display:flex; flex-wrap:wrap; gap:6px; padding:12px 4px 4px; border-top:1px solid var(--rule2); margin-top:10px}
+.chip{
+  display:flex; align-items:center; gap:7px; padding:6px 11px 6px 8px;
+  border:1px solid var(--rule); border-radius:2px; background:var(--sheet2);
+  font-size:12.5px; font-weight:600; color:var(--ink2); line-height:1.2;
+}
+.chip .sw{width:9px; height:9px; border-radius:1px; background:var(--rc); flex:none}
+.chip .ct{font-family:var(--f-mono); font-size:10px; color:var(--ink3); font-weight:400}
+.chip:hover{background:var(--sunk); color:var(--ink)}
+.chip[aria-pressed="true"]{border-color:var(--rc); color:var(--ink); background:var(--sheet2); box-shadow:inset 0 0 0 1px var(--rc)}
+
+.maplegend{
+  display:flex; flex-wrap:wrap; gap:14px; padding:10px 4px 2px;
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink3); border-top:1px solid var(--rule2); margin-top:10px;
+}
+.maplegend span{display:flex; align-items:center; gap:6px}
+.maplegend i{width:14px; height:0; border-top:1.4px solid currentColor; display:block}
+
+/* ── dossier ────────────────────────────────────────────── */
+.dossier{padding:22px 24px 26px}
+/* Pin the map beside the gazetteer, but only where it comfortably fits:
+   a sticky box taller than the viewport would strand its own lower half. */
+@media (min-width:1120px) and (min-height:820px){
+  .mapwrap{position:sticky; top:16px}
+}
+.d-eyebrow{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink3); margin-bottom:9px;
+}
+.d-eyebrow .dot{width:9px; height:9px; border-radius:50%; background:var(--rc)}
+.d-eyebrow .role{color:var(--rc); font-weight:600}
+.d-title{font-size:clamp(23px,2.5vw,30px); letter-spacing:.05em; text-transform:uppercase; color:var(--ink)}
+.d-alias{font-family:var(--f-mono); font-size:12px; color:var(--ink3); letter-spacing:.1em; margin-top:4px}
+.d-lead{margin-top:14px; font-size:16.5px; line-height:1.62; color:var(--ink); max-width:62ch}
+.d-lead b{font-weight:600; box-shadow:inset 0 -.42em 0 var(--accent-wash)}
+
+.sec{margin-top:26px}
+.sec-head{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink3); margin-bottom:12px;
+}
+.sec-head::after{content:""; flex:1; height:1px; background:var(--rule)}
+
+.facets{display:flex; flex-direction:column; gap:2px}
+.facet{border-top:1px solid var(--rule2); padding:12px 0}
+.facet:first-child{border-top:0; padding-top:0}
+.facet h4{font-size:15.5px; letter-spacing:.01em; font-weight:600; margin-bottom:4px}
+.facet p{color:var(--ink2); font-size:14.5px; max-width:62ch}
+.facet ul{margin:8px 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:5px}
+.facet li{
+  font-family:var(--f-mono); font-size:11px; color:var(--ink2);
+  background:var(--sunk); border-radius:2px; padding:3px 7px; line-height:1.4;
+}
+
+/* term clusters */
+.cluster{margin-bottom:16px}
+.cluster h5{
+  font-family:var(--f-body); font-size:11.5px; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink2); margin:0 0 8px;
+}
+.terms{display:flex; flex-wrap:wrap; gap:5px}
+.term{
+  display:inline-flex; align-items:center; gap:7px;
+  border:1px solid var(--rule); border-radius:2px; background:var(--sheet2);
+  padding:4px 9px 4px 7px; font-size:13px; line-height:1.35; color:var(--ink2);
+}
+.term:hover{border-color:var(--rc); color:var(--ink); background:var(--sunk)}
+.term[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.term[aria-pressed="true"] .tier{border-color:currentColor; background:transparent}
+.term[aria-pressed="true"] .tier.t1{background:currentColor}
+.term[aria-pressed="true"] .tier.t2{background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+.term .away{font-family:var(--f-mono); font-size:9px; opacity:.7}
+.tier{
+  display:inline-block; vertical-align:-1px;
+  width:8px; height:8px; border-radius:50%; flex:none;
+  border:1.3px solid var(--ink3); background:transparent;
+}
+.tier.t1{background:var(--ink3)}
+.tier.t2{background:linear-gradient(90deg,var(--ink3) 50%,transparent 50%)}
+
+/* term entry card */
+.entry{
+  border:1px solid var(--rule); border-left:3px solid var(--accent);
+  background:var(--sheet2); border-radius:3px; padding:16px 18px; margin-bottom:16px;
+}
+.entry-top{display:flex; align-items:flex-start; gap:12px; flex-wrap:wrap}
+.entry h4{font-size:19px; letter-spacing:.02em}
+.entry .full{color:var(--ink3); font-size:13px; font-style:italic; margin-top:2px}
+.entry .meta{margin-left:auto; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.badge{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+  border:1px solid var(--rule); border-radius:2px; padding:3px 6px; color:var(--ink3);
+}
+.badge.home{border-color:var(--rc); color:var(--rc)}
+.entry .def{margin-top:11px; font-size:15px; line-height:1.6; max-width:62ch}
+.entry .note{
+  margin-top:11px; padding-top:11px; border-top:1px dashed var(--rule);
+  font-size:14px; color:var(--ink2); max-width:62ch;
+}
+.entry .note strong{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent-ink); display:block; margin-bottom:4px; font-weight:600;
+}
+.entry .rel{display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-top:13px}
+.entry .rel .lb{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--ink3); margin-right:2px;
+}
+.relbtn{
+  border:1px solid var(--rule); border-radius:2px; padding:2px 8px;
+  font-size:12.5px; color:var(--ink2); background:var(--sheet);
+}
+.relbtn:hover{border-color:var(--accent); color:var(--accent-ink)}
+.entry .close{margin-left:6px; color:var(--ink3); font-size:16px; line-height:1; padding:2px 5px}
+.entry .close:hover{color:var(--accent)}
+
+.tips{
+  display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:26px; padding-top:14px;
+  border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink3);
+}
+.tips b{font-weight:600; color:var(--ink2)}
+kbd{
+  font-family:var(--f-mono); font-size:11px; border:1px solid var(--rule);
+  border-bottom-width:2px; border-radius:3px; padding:1px 5px; background:var(--sheet2); color:var(--ink2);
+}
+
+/* ── Capability Commons footer ───────────────────────────
+   The pathway chain deliberately echoes the map's route strip:
+   both are dashed orange progressions, one through the field,
+   one through the framework this map serves. */
+.commons{margin-top:40px; padding-top:26px; border-top:2px solid var(--rule)}
+.commons-grid{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:32px 44px}
+@media (max-width:860px){.commons-grid{grid-template-columns:minmax(0,1fr); gap:28px}}
+
+.commons-eyebrow{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ink3); margin-bottom:9px;
+}
+.commons-mark{
+  font-family:var(--f-disp); font-weight:700; font-size:clamp(21px,2.4vw,27px);
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink); line-height:1.1;
+}
+.commons-def{margin-top:12px; font-size:14.5px; color:var(--ink2); max-width:56ch}
+.commons-place{
+  margin-top:12px; font-size:14px; color:var(--ink2); max-width:56ch;
+  padding-left:12px; border-left:2px solid var(--accent);
+}
+.commons-place b{color:var(--ink); font-weight:600}
+
+.pathway{display:flex; flex-direction:column; margin-top:6px}
+.stage{position:relative; padding:0 0 15px 25px}
+.stage:last-child{padding-bottom:0}
+.stage::before{
+  content:""; position:absolute; left:6px; top:15px; bottom:0;
+  border-left:1.5px dashed var(--accent); opacity:.6;
+}
+.stage:last-child::before{content:none}
+.stage .pip{
+  position:absolute; left:0; top:1px; width:13px; height:13px; border-radius:50%;
+  background:var(--sheet); border:1.7px solid var(--accent);
+}
+.stage .sname{
+  font-family:var(--f-disp); font-weight:600; font-size:15.5px;
+  letter-spacing:.03em; color:var(--ink);
+}
+.stage .swhat{
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink3); margin-left:9px; white-space:nowrap;
+}
+
+.commons-links{display:flex; flex-wrap:wrap; gap:6px 8px; margin-top:22px}
+.commons-links a{
+  font-size:12.5px; color:var(--ink2); text-decoration:none;
+  border:1px solid var(--rule); border-radius:2px; padding:4px 10px; background:var(--sheet);
+}
+.commons-links a:hover{border-color:var(--accent); color:var(--accent-ink); background:var(--sheet2)}
+
+.colophon{
+  margin-top:26px; padding-top:14px; border-top:1px solid var(--rule2);
+  display:flex; flex-wrap:wrap; gap:8px 22px; align-items:baseline;
+  font-size:12px; color:var(--ink3);
+}
+.colophon .mono{font-size:10.5px; letter-spacing:.12em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <div class="sheetline">Survey sheet 01 of 01 &nbsp;&middot;&nbsp; scale: conceptual</div>
+      <h1>The AI Field Map</h1>
+      <p class="sub">Seven territories, drawn to scale by scope. Select any region for detail, worked examples, and the vocabulary that belongs to it.</p>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <span class="ctl-label" id="lbl-depth">Reading level</span>
+        <div class="switch" role="group" aria-labelledby="lbl-depth">
+          <button type="button" id="d-new" aria-pressed="true">Newcomer</button>
+          <button type="button" id="d-pro" aria-pressed="false">Practitioner</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <label class="ctl-label" for="q">Gazetteer</label>
+        <div class="searchbox">
+          <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search: CNN, PPO, drift" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+          <span class="hint" id="qcount"></span>
+          <div class="results" id="results" role="listbox" hidden></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card mapwrap" aria-label="Interactive survey map">
+      <div class="mapscroll">
+        <svg id="map" class="map" viewBox="0 0 1000 660" role="group" aria-label="Map of the AI landscape. Seven selectable regions.">
+          <g id="basemap" aria-hidden="true"></g>
+          <g id="regions"></g>
+          <g id="furniture" aria-hidden="true"></g>
+        </svg>
+      </div>
+      <div class="maplegend" aria-hidden="true">
+        <span><i></i> contour = depth of specialisation</span>
+        <span><i style="border-top-style:dashed"></i> route = learning path</span>
+        <span>nesting = one field inside another</span>
+      </div>
+      <div class="rail" id="rail" role="group" aria-label="Region index"></div>
+    </section>
+
+    <section class="card dossier" id="dossier" aria-live="polite"></section>
+  </div>
+
+  <footer class="commons">
+    <div class="commons-grid">
+      <div>
+        <div class="commons-eyebrow">An instrument of</div>
+        <div class="commons-mark">Capability&nbsp;Commons</div>
+        <p class="commons-def">A publicly safeguarded learning architecture that connects formal
+          education with communities, workplaces, mentors, projects, technology, and real-world
+          contribution.</p>
+        <p class="commons-place">This map sits at the <b>Access</b> stage: knowledge, tools and
+          vocabulary held in common, so that reading the AI landscape is not gated by where
+          you happened to study.</p>
+      </div>
+      <div>
+        <div class="commons-eyebrow">The pathway</div>
+        <div class="pathway">
+          <div class="stage"><div class="pip"></div><span class="sname">Access</span><span class="swhat">shared ground</span></div>
+          <div class="stage"><div class="pip"></div><span class="sname">Agency</span><span class="swhat">human choice</span></div>
+          <div class="stage"><div class="pip"></div><span class="sname">Capability</span><span class="swhat">real freedom</span></div>
+          <div class="stage"><div class="pip"></div><span class="sname">Contribution</span><span class="swhat">public value</span></div>
+        </div>
+        <div class="commons-links">
+          <a href="https://capabilitycommons.com" target="_blank" rel="noopener noreferrer">capabilitycommons.com</a>
+          <a href="https://www.figma.com/community/file/1666559229722530695/capability-commons-an-open-framework-for-turning-access-into-contribution" target="_blank" rel="noopener noreferrer">Concept model</a>
+          <a href="https://medium.com/@deepusnath/the-fishbowl-is-not-the-future-62bcfc661246" target="_blank" rel="noopener noreferrer">The Fishbowl Is Not the Future</a>
+          <a href="https://mulearn.org" target="_blank" rel="noopener noreferrer">&#956;Learn</a>
+        </div>
+      </div>
+    </div>
+    <div class="colophon">
+      <span class="mono">The AI Field Map</span>
+      <span id="stat" class="mono"></span>
+      <span>An explorable companion to the poster "The Landscape of AI &amp; ML".</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ═══ TERM GAZETTEER ═══════════════════════════════════════
+   n=name  f=full form  t=tier(1 foundation,2 working,3 frontier)
+   r=home region  d=definition  x=practitioner note  k=related    */
+const T = {
+/* ── R1 Artificial Intelligence ── */
+"symbolic-ai":{n:"Symbolic AI",f:"Rule and logic based AI, sometimes GOFAI",t:1,r:"ai",d:"Intelligence built from explicit symbols, facts and rules that a person writes down, rather than patterns fitted from data.",x:"Still the right tool when the rules are known, must be auditable, or must never be violated: tax calculation, safety interlocks, eligibility checks.",k:["expert-system","planning","search-algorithm"]},
+"expert-system":{n:"Expert system",t:1,r:"ai",d:"A program that encodes a specialist's decision rules as a large IF/THEN knowledge base and applies them with an inference engine.",x:"Dominated commercial AI in the 1980s, then stalled on the knowledge acquisition bottleneck: experts could not articulate every rule, and the rule bases became unmaintainable.",k:["symbolic-ai","knowledge-graph"]},
+"knowledge-graph":{n:"Knowledge graph",t:2,r:"ai",d:"Facts stored as a network of entities and the labelled relationships between them, so a machine can traverse and query meaning rather than text.",x:"Pairs well with language models: the graph supplies checkable facts and provenance, the model supplies fluent language.",k:["rag","information-retrieval","gnn"]},
+"search-algorithm":{n:"Search (A*, BFS, DFS)",t:1,r:"ai",d:"Methods that explore a space of possible states or moves to find a path to a goal, with heuristics like A* steering toward promising branches.",x:"Nothing is learned here. Routing, puzzle solving and classical game engines are search problems, not learning problems.",k:["minimax","planning","mcts"]},
+"minimax":{n:"Minimax and alpha-beta",t:2,r:"ai",d:"A game playing method that assumes an optimal opponent and picks the move minimising your worst case, with alpha-beta pruning discarding branches that cannot change the result.",k:["search-algorithm","mcts"]},
+"csp":{n:"Constraint satisfaction",t:2,r:"ai",d:"Framing a problem as variables, domains and constraints, then finding an assignment that violates nothing. Timetabling, seating and shift scheduling are the classic cases.",k:["planning","search-algorithm"]},
+"planning":{n:"Automated planning",t:2,r:"ai",d:"Given a start state, a goal and actions with preconditions and effects, produce a sequence of actions that reaches the goal.",x:"The vocabulary is resurfacing in agent frameworks that ask a model to produce a plan before acting.",k:["agent","tool-use","csp"]},
+"bayesian-network":{n:"Bayesian network",t:2,r:"ai",d:"A graph of variables where edges encode conditional dependence, letting you reason about probabilities and update beliefs as evidence arrives.",x:"Good where examples are few but domain knowledge is real, and where you must show why a conclusion was reached.",k:["probability","naive-bayes","interpretability"]},
+"fuzzy-logic":{n:"Fuzzy logic",t:3,r:"ai",d:"Logic with degrees of truth between 0 and 1, used to encode vague human notions such as slightly too warm.",x:"Common in control systems for appliances and cameras rather than in modern data driven AI.",k:["symbolic-ai"]},
+"agent":{n:"Agent",t:1,r:"ai",d:"A system that perceives an environment, decides, acts on it, observes the result, and repeats.",x:"A modern agent is a model plus tools plus memory plus a control loop, and most failures come from the loop rather than the model.",k:["tool-use","multi-agent","policy","planning"]},
+"tool-use":{n:"Tool use and function calling",t:2,r:"ai",d:"Letting a model call external functions, APIs or code instead of answering only from its own weights.",x:"This turns a language model into an actuator, and it is the main new attack surface: everything a tool returns should be treated as untrusted input.",k:["agent","rag","llm"]},
+"multi-agent":{n:"Multi-agent systems",t:3,r:"ai",d:"Several agents that cooperate, compete or negotiate, each with its own objective and partial view of the world.",k:["agent","reward-function"]},
+"narrow-ai":{n:"Narrow AI (ANI)",t:1,r:"ai",d:"A system competent at one task or a bounded set of tasks. Every deployed AI system today is narrow, however broad it appears.",k:["agi","llm"]},
+"agi":{n:"AGI and ASI",t:1,r:"ai",d:"Artificial general intelligence: a hypothetical system matching human breadth across tasks. Superintelligence goes beyond it. Both are goals and debates, not product categories.",k:["narrow-ai","ai-alignment"]},
+"turing-test":{n:"Turing test",t:1,r:"ai",d:"Turing's 1950 proposal that a machine indistinguishable from a person in conversation should count as thinking.",x:"Useful history, poor benchmark: it rewards imitation and deception rather than competence, which is why the field moved to task specific evaluation.",k:["benchmark","human-eval"]},
+"nlp":{n:"Natural language processing",t:1,r:"ai",d:"The subfield concerned with understanding and generating human language: translation, summarisation, extraction, dialogue.",k:["llm","tokenization","transformer"]},
+"computer-vision":{n:"Computer vision",t:1,r:"ai",d:"The subfield concerned with extracting meaning from images and video: classification, detection, segmentation, tracking and reconstruction.",k:["cnn","vision-transformer","medical-imaging"]},
+"speech-processing":{n:"Speech processing",t:2,r:"ai",d:"Turning audio into text, text into audio, and identifying who is speaking.",k:["rnn","transformer","multimodal"]},
+"robotics":{n:"Robotics",t:2,r:"ai",d:"AI joined to a physical body, where perception, planning and control must run under real time and safety constraints.",x:"The hard part is rarely the model. It is the gap between simulation and reality, the latency budget, and the fact that a mistake has physical consequences.",k:["slam","path-planning","agri-robotics"]},
+"information-retrieval":{n:"Information retrieval",t:2,r:"ai",d:"Finding relevant items in a large collection: the engineering behind search, and the retrieval half of RAG.",k:["rag","embedding","ranking"]},
+"ai-alignment":{n:"AI alignment",t:2,r:"ai",d:"The problem of making a capable system pursue what its operators and users actually intend, including in situations nobody anticipated.",k:["reward-function","rlhf","ai-governance"]},
+"interpretability":{n:"Interpretability",t:2,r:"ai",d:"Techniques for explaining why a model produced an output: feature attribution, saliency, probing and circuit level analysis.",x:"Separate global interpretability (how does this model work) from local (why this prediction). SHAP and LIME answer the second, not the first.",k:["algorithmic-bias","model-risk","decision-tree"]},
+"algorithmic-bias":{n:"Algorithmic bias",t:1,r:"ai",d:"Systematic unfairness in a model's outputs, usually inherited from skewed training data or from a proxy variable standing in for a protected attribute.",x:"Bias is a data and objective problem before it is a model problem. Check base rates and label provenance before touching the architecture.",k:["fairness-metrics","annotation","responsible-ai"]},
+"ai-governance":{n:"AI governance",t:2,r:"ai",d:"The policies, documentation and review that decide what a system may be used for, who is accountable, and how it is monitored after launch.",k:["model-card","ai-regulation","model-risk"]},
+
+/* ── R2 Machine Learning ── */
+"feature":{n:"Feature",t:1,r:"ml",d:"An input variable the model reads: a column, a pixel, a word, a derived signal.",k:["feature-engineering","embedding","label"]},
+"label":{n:"Label or target",t:1,r:"ml",d:"The answer a supervised model is trained to reproduce.",k:["annotation","feature"]},
+"split":{n:"Train, validation and test split",t:1,r:"ml",d:"Three disjoint slices of data: one to fit on, one to tune choices against, one touched only at the very end to estimate real performance.",x:"The test set stops being a test set the moment you make a decision from it. Repeated peeking is the most common quiet cause of inflated results.",k:["cross-validation","data-leakage","generalization"]},
+"generalization":{n:"Generalisation",t:1,r:"ml",d:"How well a model performs on data it has never seen. It is the only measure that matters.",k:["overfitting","split","inductive-bias"]},
+"inductive-bias":{n:"Inductive bias",t:3,r:"ml",d:"The assumptions an algorithm brings before it sees any data: convolutions assume locality, trees assume axis aligned splits, linear models assume additivity.",x:"Choosing a model is choosing an inductive bias. When data is scarce, the bias does more work than the data.",k:["cnn","decision-tree","generalization"]},
+"overfitting":{n:"Overfitting",t:1,r:"ml",d:"The model has memorised the training data, including its noise, and performs worse on new data.",x:"Diagnose from the gap between training and validation curves. Fix with more data, augmentation, regularisation, a simpler model, or early stopping.",k:["regularization","underfitting","early-stopping"]},
+"underfitting":{n:"Underfitting",t:1,r:"ml",d:"The model is too simple or too constrained to capture the real pattern, so it is wrong on both training and new data.",k:["overfitting","bias-variance"]},
+"bias-variance":{n:"Bias and variance trade-off",t:2,r:"ml",d:"Error decomposes into bias (wrong assumptions), variance (sensitivity to the particular sample) and irreducible noise. Reducing one usually raises the other.",k:["overfitting","ensemble","regularization"]},
+"data-leakage":{n:"Data leakage",t:2,r:"ml",d:"Information from outside the training window, or from the target itself, sneaking into the features and producing results that are too good to be true.",x:"Classic sources: scaling before splitting, a timestamp derived feature, an identifier that encodes the outcome, duplicate rows across splits.",k:["split","cross-validation","scikit-learn"]},
+"class-imbalance":{n:"Class imbalance",t:2,r:"ml",d:"When one class is far rarer than another, so accuracy becomes meaningless and a model can win by always predicting the majority.",x:"Judge with precision, recall and PR AUC. Fix with class weights, resampling, threshold tuning or a cost sensitive loss.",k:["precision-recall","roc-auc","fraud-detection"]},
+"curse-of-dimensionality":{n:"Curse of dimensionality",t:3,r:"ml",d:"As the number of features grows, data becomes sparse, distances lose meaning, and the volume you would need to cover explodes.",k:["pca","knn","feature-engineering"]},
+"concept-drift":{n:"Concept drift",t:2,r:"ml",d:"The relationship between inputs and target changes after deployment, so a once accurate model quietly decays.",x:"Distinguish data drift (the inputs shift) from concept drift (the mapping shifts). Only the second necessarily requires retraining.",k:["data-drift","model-monitoring","online-learning"]},
+"loss-function":{n:"Loss function",t:1,r:"ml",d:"The number the training process tries to make small: how wrong the model currently is.",k:["cross-entropy","mse-loss","gradient-descent"]},
+"gradient-descent":{n:"Gradient descent",t:1,r:"ml",d:"Repeatedly nudge each parameter in the direction that most reduces the loss, in small steps, until it stops improving.",k:["optimizer","backpropagation","learning-rate"]},
+"hyperparameter":{n:"Hyperparameter",t:1,r:"ml",d:"A setting you choose before training (tree depth, learning rate, number of estimators), as opposed to a parameter the model learns.",k:["hyperparameter-search","parameters","cross-validation"]},
+"regularization":{n:"Regularisation",t:2,r:"ml",d:"Any deliberate constraint that discourages the model from fitting noise: an L1 or L2 penalty on weights, dropout, early stopping, or simply more data.",k:["overfitting","dropout","early-stopping"]},
+"cross-validation":{n:"Cross-validation",t:2,r:"ml",d:"Split the data k ways, train k times holding out a different fold each time, then average the scores for a more stable estimate than one split gives.",x:"Use grouped or time aware folds when rows are correlated. Random k-fold on a time series leaks the future into the past.",k:["split","forecasting","hyperparameter-search"]},
+"ensemble":{n:"Ensembles",t:2,r:"ml",d:"Combining several models so their errors partly cancel. Bagging averages independent models, boosting fits each new model to the previous ones' mistakes, stacking learns how to blend them.",k:["random-forest","gradient-boosting","bias-variance"]},
+"classification":{n:"Classification",t:1,r:"ml",d:"Predicting a category: spam or not, which of ten digits, which diagnosis.",k:["logistic-regression","cross-entropy","precision-recall"]},
+"regression-task":{n:"Regression (the task)",t:1,r:"ml",d:"Predicting a number: a price, a duration, a temperature.",k:["linear-regression","regression-metrics","mse-loss"]},
+"ranking":{n:"Ranking",t:2,r:"ml",d:"Ordering a candidate list by relevance rather than scoring each item in isolation. The core of search and of feeds.",k:["recommender-system","information-retrieval","two-tower"]},
+"forecasting":{n:"Forecasting",t:2,r:"ml",d:"Predicting future values of a series where order and seasonality matter, so ordinary shuffled splits do not apply.",x:"Always validate with a rolling origin. A random split on time series data is the single most common way to publish a fantasy score.",k:["cross-validation","demand-forecasting","concept-drift"]},
+
+/* ── R3 Deep Learning ── */
+"neuron":{n:"Neuron or perceptron",t:1,r:"dl",d:"The unit: multiply inputs by weights, add a bias, pass the result through a nonlinearity.",k:["mlp","activation-function","parameters"]},
+"mlp":{n:"MLP (feedforward network)",t:1,r:"dl",d:"Layers of neurons connected front to back with no loops. The plain baseline architecture.",k:["neuron","backpropagation"]},
+"parameters":{n:"Parameters and weights",t:1,r:"dl",d:"The numbers learned during training. Model size is usually quoted as a parameter count.",k:["hyperparameter","quantization","lora"]},
+"activation-function":{n:"Activation function",t:1,r:"dl",d:"The nonlinearity after each layer (ReLU, GELU, sigmoid, tanh, softmax). Without it, stacked layers collapse into a single linear one.",k:["neuron","vanishing-gradient"]},
+"backpropagation":{n:"Backpropagation",t:1,r:"dl",d:"The chain rule applied backwards through the network to work out how much each weight contributed to the error.",x:"Backpropagation computes gradients; the optimiser decides what to do with them. Conflating the two causes a lot of confusion.",k:["gradient-descent","optimizer","calculus"]},
+"cnn":{n:"CNN",f:"Convolutional neural network",t:1,r:"dl",d:"A network that slides small learned filters across a grid, so the same pattern is detected wherever it appears. The workhorse for images.",x:"Still the pragmatic default for small image datasets and edge deployment: fewer parameters, a strong locality prior, and cheaper than a vision transformer.",k:["convolution","pooling","vision-transformer","computer-vision"]},
+"convolution":{n:"Convolution",t:2,r:"dl",d:"The sliding filter operation itself: a weighted sum over a local patch, repeated across the whole input.",k:["cnn","receptive-field"]},
+"pooling":{n:"Pooling",t:2,r:"dl",d:"Downsampling a feature map, usually by taking the maximum or average of each patch, to shrink it and add tolerance to small shifts.",k:["cnn","receptive-field"]},
+"receptive-field":{n:"Receptive field",t:3,r:"dl",d:"The region of the original input that influences one unit deep in the network. It grows with depth, stride and dilation.",k:["cnn","convolution"]},
+"resnet":{n:"Residual connection (ResNet)",t:2,r:"dl",d:"A shortcut that adds a layer's input to its output, so gradients have a clean path backwards and very deep networks stay trainable.",x:"The single change that made networks past a hundred layers practical, and it now sits inside almost every transformer block too.",k:["vanishing-gradient","transformer","normalization"]},
+"vision-transformer":{n:"Vision transformer (ViT)",t:3,r:"dl",d:"Cut an image into patches, treat each patch as a token, and run a transformer over them.",x:"Beats CNNs at scale but needs far more data or heavy pretraining. Below that threshold a CNN usually wins.",k:["cnn","transformer","pretraining"]},
+"rnn":{n:"RNN",f:"Recurrent neural network",t:1,r:"dl",d:"A network that reads a sequence one step at a time and carries a hidden state forward, so earlier items influence later ones.",x:"Largely displaced by transformers for language, but still sensible for long streaming signals and small on device sequence models.",k:["lstm","vanishing-gradient","attention"]},
+"vanishing-gradient":{n:"Vanishing gradient",t:2,r:"dl",d:"In deep or long chains, gradients shrink toward zero as they propagate back, so early layers or early timesteps stop learning.",k:["lstm","resnet","activation-function"]},
+"lstm":{n:"LSTM",f:"Long short-term memory",t:2,r:"dl",d:"A recurrent cell with explicit input, forget and output gates deciding what to keep and what to discard, which fixes most of the vanishing gradient problem.",k:["rnn","gru","vanishing-gradient"]},
+"gru":{n:"GRU",f:"Gated recurrent unit",t:3,r:"dl",d:"A lighter LSTM with two gates instead of three. Often the same accuracy with fewer parameters and faster training.",k:["lstm","rnn"]},
+"attention":{n:"Attention",t:1,r:"dl",d:"A mechanism letting each position look at every other position and weight what is relevant, instead of relying on a state passed along step by step.",k:["transformer","positional-encoding","embedding"]},
+"transformer":{n:"Transformer",t:1,r:"dl",d:"The architecture built from stacked self attention and feedforward blocks, processing a whole sequence in parallel.",x:"The parallelism, not the accuracy, was the breakthrough: it turned model quality into a compute and data budget question.",k:["attention","llm","scaling-laws","moe"]},
+"positional-encoding":{n:"Positional encoding",t:3,r:"dl",d:"Because attention has no inherent notion of order, position information is injected explicitly, whether sinusoidal, learned or rotary.",k:["attention","transformer"]},
+"tokenization":{n:"Tokenisation",t:2,r:"dl",d:"Splitting text into the units a model actually reads, usually subword pieces rather than whole words.",x:"Explains a lot of odd behaviour: character counting, arithmetic on long numbers, and why some languages cost more tokens for the same text.",k:["llm","embedding","nlp"]},
+"embedding":{n:"Embedding",t:1,r:"dl",d:"A dense vector representing an item (word, image, user, product) so that similar things sit near each other.",x:"The most reusable artefact in modern ML: one good embedding space powers search, recommendation, clustering, deduplication and retrieval.",k:["rag","two-tower","information-retrieval","pca"]},
+"llm":{n:"LLM",f:"Large language model",t:1,r:"dl",d:"A transformer trained on very large text corpora to predict the next token, then adapted with instruction tuning and preference training.",k:["transformer","rlhf","rag","in-context-learning"]},
+"sampling-temperature":{n:"Temperature and sampling",t:2,r:"dl",d:"The dial on how randomly a generative model picks its next token. Low is repetitive and safe, high is varied and error prone.",k:["llm","perplexity"]},
+"gan":{n:"GAN",f:"Generative adversarial network",t:2,r:"dl",d:"Two networks in a contest: a generator making fakes and a discriminator judging them, both improving until the fakes are convincing.",x:"Sharp results, notoriously unstable training, and prone to mode collapse. Diffusion models replaced them for most image generation.",k:["diffusion-model","vae","generative-media"]},
+"vae":{n:"VAE",f:"Variational autoencoder",t:3,r:"dl",d:"An autoencoder trained to map data into a smooth probability distribution, so new points can be sampled from that space.",k:["autoencoder","gan","diffusion-model"]},
+"autoencoder":{n:"Autoencoder",t:2,r:"dl",d:"A network trained to compress its input into a bottleneck and rebuild it, learning a compact representation on the way.",x:"Reconstruction error makes a serviceable anomaly detector when you have plenty of normal examples and almost no labelled failures.",k:["anomaly-detection","vae","pca"]},
+"diffusion-model":{n:"Diffusion model",t:2,r:"dl",d:"Learn to reverse a gradual noising process: start from pure noise and denoise step by step into an image, video or audio clip.",x:"Now the default for image and video generation. The trade is quality against sampling steps, which is why distillation and few step samplers matter commercially.",k:["gan","generative-media","distillation"]},
+"gnn":{n:"GNN",f:"Graph neural network",t:3,r:"dl",d:"A network that passes messages along the edges of a graph, so each node's representation absorbs its neighbourhood.",x:"The natural fit for molecules, fraud rings and social graphs, where the relationships carry more signal than the nodes do.",k:["knowledge-graph","fraud-detection","drug-discovery"]},
+"multimodal":{n:"Multimodal model",t:2,r:"dl",d:"A model that takes in or produces more than one kind of data at once: image with text, audio with video.",k:["llm","vision-transformer","embedding"]},
+"dropout":{n:"Dropout",t:2,r:"dl",d:"Randomly switch off a fraction of units during training so the network cannot depend on any single path. A cheap and effective regulariser.",k:["regularization","overfitting"]},
+"normalization":{n:"Batch and layer normalisation",t:2,r:"dl",d:"Rescaling activations inside the network to keep their distribution stable, which permits higher learning rates and faster convergence.",k:["learning-rate","resnet","transformer"]},
+"transfer-learning":{n:"Transfer learning",t:1,r:"dl",d:"Take a model trained on a large general task and reuse it for your smaller, specific one.",x:"For most teams this is the whole game. Pretraining from scratch is rarely justified when a strong open checkpoint exists.",k:["fine-tuning","pretraining","lora"]},
+"fine-tuning":{n:"Fine-tuning",t:1,r:"dl",d:"Continue training a pretrained model on your own data so it adapts to your task, domain or style.",k:["transfer-learning","lora","rlhf"]},
+"lora":{n:"LoRA and PEFT",t:3,r:"dl",d:"Parameter efficient fine tuning: freeze the base weights and train small low rank adapters instead, cutting memory and storage dramatically.",x:"Lets you keep one base model and swap task specific adapters, rather than storing a full model copy per task.",k:["fine-tuning","quantization","parameters"]},
+"distillation":{n:"Distillation",t:3,r:"dl",d:"Train a small student model to reproduce a large teacher's outputs, keeping most of the quality at a fraction of the serving cost.",k:["quantization","inference-vs-training","diffusion-model"]},
+"pretraining":{n:"Pretraining",t:2,r:"dl",d:"The first, expensive training phase on broad unlabelled data, before any task specific adaptation.",k:["self-supervised","transfer-learning","scaling-laws"]},
+"moe":{n:"Mixture of experts",t:3,r:"dl",d:"Only a subset of the network's parameters activate for any given input, so total capacity grows without a proportional rise in compute per token.",k:["transformer","scaling-laws","llm"]},
+"scaling-laws":{n:"Scaling laws",t:3,r:"dl",d:"Empirical relationships showing how loss falls predictably as parameters, data and compute increase together.",x:"Their practical value is planning: they say whether the next dollar should go to data, to parameters or to training length.",k:["pretraining","transformer","gpu"]},
+"rag":{n:"RAG",f:"Retrieval augmented generation",t:2,r:"dl",d:"Retrieve relevant documents at query time and place them in the model's context, so answers are grounded in a source you control.",x:"Usually cheaper and more maintainable than fine tuning for factual freshness. Retrieval quality, not the model, is where most RAG systems fail.",k:["embedding","information-retrieval","llm","knowledge-graph"]},
+"in-context-learning":{n:"In-context learning",t:2,r:"dl",d:"A model adapting its behaviour purely from examples placed in the prompt, with no weight updates at all.",k:["llm","meta-learning","fine-tuning"]},
+
+/* ── R4 Types of ML ── */
+"linear-regression":{n:"Linear regression",t:1,r:"types",d:"Fit a straight line, or a plane, through the data. The simplest model and a genuinely useful baseline.",k:["regression-task","regression-metrics","logistic-regression"]},
+"logistic-regression":{n:"Logistic regression",t:1,r:"types",d:"Linear regression pushed through a sigmoid to produce a probability between 0 and 1. The default baseline for binary classification.",x:"Interpretable, fast, well calibrated and hard to beat on tabular data with few features. Fit one before reaching for anything larger.",k:["classification","calibration","cross-entropy"]},
+"decision-tree":{n:"Decision tree",t:1,r:"types",d:"A cascade of yes or no questions on feature values, ending in a prediction. Easy to read, easy to overfit.",k:["random-forest","gradient-boosting","interpretability"]},
+"random-forest":{n:"Random forest",t:1,r:"types",d:"Hundreds of trees, each trained on a random subset of rows and features, voting together. Robust with almost no tuning.",k:["ensemble","decision-tree","gradient-boosting"]},
+"gradient-boosting":{n:"Gradient boosting (XGBoost, LightGBM, CatBoost)",t:2,r:"types",d:"Trees added one at a time, each fitted to the errors the previous ones left behind.",x:"Still the winner on most tabular problems. If your data is rows and columns rather than pixels or text, start here, not with a neural network.",k:["ensemble","random-forest","hyperparameter-search"]},
+"svm":{n:"SVM",f:"Support vector machine",t:2,r:"types",d:"Find the boundary with the widest margin between classes, optionally after projecting into a higher dimensional space with a kernel.",k:["classification","knn"]},
+"knn":{n:"k-nearest neighbours",t:1,r:"types",d:"Classify a new point by looking at the k closest examples you have already seen. There is no training phase at all.",x:"Conceptually the ancestor of vector search: the same nearest neighbour idea, now run over learned embeddings at scale.",k:["embedding","curse-of-dimensionality","information-retrieval"]},
+"naive-bayes":{n:"Naive Bayes",t:2,r:"types",d:"Apply Bayes' rule while pretending the features are independent. A crude assumption that works surprisingly well for text.",k:["bayesian-network","nlp","probability"]},
+"k-means":{n:"k-means",t:1,r:"types",d:"Partition data into k groups by repeatedly assigning points to the nearest centre and moving the centres.",x:"You must pick k, it assumes round clusters of similar size, and it is sensitive to initialisation and to feature scaling.",k:["dbscan","gmm","pca"]},
+"hierarchical-clustering":{n:"Hierarchical clustering",t:2,r:"types",d:"Build a tree of nested groups by repeatedly merging the closest pairs, then cut the tree wherever you like.",k:["k-means","dbscan"]},
+"dbscan":{n:"DBSCAN",t:2,r:"types",d:"Cluster by density, finding arbitrarily shaped groups and labelling sparse points as noise instead of forcing them into a cluster.",k:["k-means","anomaly-detection"]},
+"gmm":{n:"Gaussian mixture model",t:3,r:"types",d:"Model the data as a blend of Gaussian distributions, giving each point a soft probability of belonging to each cluster.",k:["k-means","probability"]},
+"pca":{n:"PCA",f:"Principal component analysis",t:1,r:"types",d:"Rotate the data onto the axes carrying the most variance, so you can keep a few dimensions and drop the rest.",k:["tsne-umap","curse-of-dimensionality","embedding"]},
+"tsne-umap":{n:"t-SNE and UMAP",t:2,r:"types",d:"Nonlinear methods for squashing high dimensional data into two dimensions for viewing.",x:"For looking, not for measuring. Distances between clusters and their apparent sizes in the plot do not carry their original meaning.",k:["pca","embedding"]},
+"association-rules":{n:"Association rules (Apriori)",t:2,r:"types",d:"Find items that co-occur more often than chance would predict. The customers who bought this also bought that pattern.",k:["recommender-system","collaborative-filtering"]},
+"anomaly-detection":{n:"Anomaly detection",t:1,r:"types",d:"Flagging points that do not resemble the rest, using isolation forests, one class SVMs or autoencoder reconstruction error.",k:["autoencoder","fraud-detection","dbscan"]},
+"topic-modelling":{n:"Topic modelling (LDA)",t:3,r:"types",d:"Discover recurring themes across a document collection without being told in advance what the themes are.",k:["nlp","embedding","k-means"]},
+"mdp":{n:"Markov decision process",t:2,r:"types",d:"The formal frame for reinforcement learning: states, actions, transition probabilities, rewards and a discount factor.",k:["policy","q-learning","reward-function"]},
+"policy":{n:"Policy",t:1,r:"types",d:"The agent's rule for choosing an action given a state. Training a reinforcement learner means improving the policy.",k:["policy-gradient","ppo","agent"]},
+"reward-function":{n:"Reward function",t:1,r:"types",d:"The signal telling the agent how well it is doing. Everything the agent learns follows from it.",x:"Reward hacking is the standard failure: the agent maximises the number you wrote instead of the outcome you meant.",k:["ai-alignment","rlhf","exploration-exploitation"]},
+"exploration-exploitation":{n:"Exploration and exploitation",t:1,r:"types",d:"The standing dilemma: take the best known option, or try something unknown that might turn out better.",k:["bandit","q-learning","ab-test"]},
+"q-learning":{n:"Q-learning",t:2,r:"types",d:"Learn the expected long run value of taking each action in each state, then act greedily on those values.",k:["dqn","mdp","policy"]},
+"dqn":{n:"DQN",f:"Deep Q-network",t:3,r:"types",d:"Q-learning with a neural network estimating the values, plus a replay buffer and a target network for stability. The method that learned Atari from raw pixels.",k:["q-learning","cnn"]},
+"policy-gradient":{n:"Policy gradient",t:3,r:"types",d:"Adjust the policy's parameters directly in the direction that increases expected reward, rather than learning values first.",k:["ppo","actor-critic","policy"]},
+"ppo":{n:"PPO",f:"Proximal policy optimisation",t:3,r:"types",d:"A policy gradient method that limits how far the policy may move in one update, trading some speed for a great deal of stability.",x:"The workhorse behind most RLHF pipelines, largely because it rarely blows up.",k:["policy-gradient","rlhf","actor-critic"]},
+"actor-critic":{n:"Actor-critic",t:3,r:"types",d:"Two components: an actor choosing actions and a critic estimating how good they were, guiding the actor's updates.",k:["policy-gradient","ppo"]},
+"mcts":{n:"Monte Carlo tree search",t:3,r:"types",d:"Plan by simulating many possible futures and expanding the branches that look most promising. The planning half of AlphaGo.",k:["search-algorithm","minimax","planning"]},
+"bandit":{n:"Multi-armed bandit",t:2,r:"types",d:"The simplest reinforcement setting: repeated one shot choices with no state to carry forward.",x:"The right frame for an A/B test that adapts while it runs, shifting traffic toward the winner instead of waiting for the end.",k:["ab-test","exploration-exploitation"]},
+"rlhf":{n:"RLHF and preference tuning",t:2,r:"types",d:"Train a reward model on human comparisons of outputs, then optimise the language model against it. How raw pretrained models become usable assistants.",x:"Direct preference optimisation and its relatives now reach much of the same effect without a separate reward model and reinforcement loop.",k:["llm","ppo","human-eval","ai-alignment"]},
+"self-supervised":{n:"Self-supervised learning",t:2,r:"types",d:"Create the labels from the data itself by hiding part of the input and predicting it. The trick that unlocked pretraining at internet scale.",k:["pretraining","llm","semi-supervised"]},
+"semi-supervised":{n:"Semi-supervised learning",t:2,r:"types",d:"Learn from a small labelled set plus a large unlabelled one, using the unlabelled data to shape the decision boundary.",k:["self-supervised","active-learning","annotation"]},
+"active-learning":{n:"Active learning",t:3,r:"types",d:"The model picks which examples it wants labelled next, concentrating scarce annotation effort where it changes the model most.",k:["annotation","human-in-the-loop","semi-supervised"]},
+"federated-learning":{n:"Federated learning",t:3,r:"types",d:"Train across many devices without collecting their raw data centrally: only model updates travel.",x:"Chosen for privacy and regulatory reasons more often than for accuracy. Expect non-identically distributed data and stragglers.",k:["pii-governance","edge-inference"]},
+"meta-learning":{n:"Meta-learning and few-shot",t:3,r:"types",d:"Learning to learn: training so that adapting to a new task takes only a handful of examples.",k:["in-context-learning","transfer-learning"]},
+"online-learning":{n:"Online learning",t:2,r:"types",d:"Updating the model continuously as new data arrives, rather than retraining in periodic batches.",k:["concept-drift","model-monitoring"]},
+
+/* ── R5 Building blocks ── */
+"dataset":{n:"Dataset",t:1,r:"blocks",d:"The collected examples a model learns from. Its coverage, balance and label quality set the ceiling on everything downstream.",k:["annotation","sampling","open-datasets"]},
+"annotation":{n:"Labelling and annotation",t:1,r:"blocks",d:"Humans marking the correct answer on raw data. Usually the slowest and most expensive part of a supervised project.",x:"Measure agreement between annotators early. If two humans disagree on a fifth of cases, no model will reliably exceed that ceiling.",k:["label","active-learning","human-eval"]},
+"data-augmentation":{n:"Data augmentation",t:2,r:"blocks",d:"Manufacturing extra training examples by transforming existing ones: flips, crops, noise, paraphrase, synonym swaps.",k:["overfitting","synthetic-data","cnn"]},
+"data-pipeline":{n:"Data pipeline",t:2,r:"blocks",d:"The plumbing that moves data from source to model: ingestion, cleaning, joining, feature computation and versioning.",k:["feature-engineering","mlops","data-drift"]},
+"feature-engineering":{n:"Feature engineering",t:1,r:"blocks",d:"Reshaping raw data into inputs a model can use well: ratios, aggregations, time deltas, encodings.",x:"Deep learning removed much of this for images and text. For tabular business data it is still where most of the gains live.",k:["feature","gradient-boosting","data-leakage"]},
+"sampling":{n:"Sampling",t:2,r:"blocks",d:"Choosing which rows to train on and in what proportion, including stratified, weighted and time aware schemes.",k:["class-imbalance","split","statistics"]},
+"synthetic-data":{n:"Synthetic data",t:3,r:"blocks",d:"Generated rather than collected examples, used to fill gaps, cover rare cases, or avoid handling sensitive records.",k:["data-augmentation","pii-governance","generative-media"]},
+"data-drift":{n:"Data drift",t:2,r:"blocks",d:"The live input distribution moving away from the training distribution. The first thing to check when a stable model starts sliding.",k:["concept-drift","model-monitoring"]},
+"pii-governance":{n:"PII and data governance",t:1,r:"blocks",d:"Rules for what personal data may be collected, kept, used for training and shown back. Consent, retention and deletion are design constraints, not paperwork.",k:["ai-regulation","federated-learning","ai-governance"]},
+"optimizer":{n:"Optimiser (SGD, Adam, AdamW)",t:1,r:"blocks",d:"The rule that turns gradients into weight updates. Adam and AdamW adapt the step size per parameter and are the usual defaults.",k:["gradient-descent","learning-rate","backpropagation"]},
+"learning-rate":{n:"Learning rate",t:1,r:"blocks",d:"How big each update step is. Too high and training diverges, too low and it crawls or gets stuck.",x:"The single hyperparameter most worth tuning. Warmup followed by cosine decay is a strong default schedule for transformers.",k:["optimizer","hyperparameter","normalization"]},
+"batch-size":{n:"Batch size",t:2,r:"blocks",d:"How many examples are processed before each weight update. Larger batches are steadier and faster per epoch but need more memory.",k:["vram","epoch","distributed-training"]},
+"epoch":{n:"Epoch",t:1,r:"blocks",d:"One full pass over the training data.",k:["batch-size","early-stopping"]},
+"early-stopping":{n:"Early stopping",t:2,r:"blocks",d:"Halt training when validation performance stops improving, keeping the best checkpoint rather than the last one.",k:["overfitting","regularization","split"]},
+"weight-init":{n:"Weight initialisation",t:3,r:"blocks",d:"The starting values of the parameters. Poor initialisation can make a deep network fail to train at all.",k:["normalization","vanishing-gradient"]},
+"cross-entropy":{n:"Cross-entropy loss",t:2,r:"blocks",d:"The standard loss for classification. It punishes confident wrong answers far more heavily than uncertain ones.",k:["loss-function","classification","calibration"]},
+"mse-loss":{n:"MSE and MAE loss",t:2,r:"blocks",d:"Regression losses. Squared error punishes large misses hard, absolute error is steadier when outliers are common.",k:["loss-function","regression-metrics"]},
+"hyperparameter-search":{n:"Hyperparameter search",t:2,r:"blocks",d:"Systematically trying configurations with grid, random or Bayesian search over the space.",x:"Random search beats grid search for the same budget, because only a few hyperparameters usually matter and random covers each of them more finely.",k:["hyperparameter","cross-validation","gradient-boosting"]},
+"gpu":{n:"GPU",t:1,r:"blocks",d:"The parallel processor that made deep learning practical, running thousands of matrix operations at once.",k:["vram","cuda","tpu"]},
+"tpu":{n:"TPU",t:3,r:"blocks",d:"Google's custom accelerator, built specifically for large tensor workloads.",k:["gpu","distributed-training"]},
+"cuda":{n:"CUDA",t:2,r:"blocks",d:"NVIDIA's programming layer for GPUs, and the reason most of the ecosystem assumes NVIDIA hardware.",k:["gpu","pytorch"]},
+"vram":{n:"VRAM",t:2,r:"blocks",d:"Memory on the accelerator. It, rather than raw speed, usually decides whether a model fits and what batch size you can run.",k:["quantization","batch-size","gpu"]},
+"distributed-training":{n:"Distributed training",t:3,r:"blocks",d:"Splitting training across many devices: by data with a full model copy on each, by tensor, or by pipeline stage.",k:["gpu","batch-size","scaling-laws"]},
+"mixed-precision":{n:"Mixed precision",t:3,r:"blocks",d:"Training in 16-bit floats with selective 32-bit steps, roughly halving memory use and raising throughput at negligible accuracy cost.",k:["vram","quantization"]},
+"quantization":{n:"Quantisation",t:2,r:"blocks",d:"Storing weights and activations at lower precision, typically 8-bit or 4-bit, to shrink a model and speed up inference.",x:"The usual route to running a capable model on a laptop or a phone. Expect a small quality cost that varies a lot by task.",k:["distillation","edge-inference","vram"]},
+"inference-vs-training":{n:"Inference versus training",t:1,r:"blocks",d:"Training fits the parameters once and is expensive. Inference runs the finished model on new inputs and is what you pay for forever.",x:"Lifetime inference cost usually dwarfs training cost. Design for it early rather than after launch.",k:["latency-throughput","quantization","distillation"]},
+"latency-throughput":{n:"Latency and throughput",t:2,r:"blocks",d:"Latency is how long one request takes, throughput is how many you serve per second. Batching improves one and harms the other.",k:["inference-vs-training","batch-size","edge-inference"]},
+"edge-inference":{n:"Edge inference",t:2,r:"blocks",d:"Running the model on the device (phone, camera, vehicle, sensor) rather than in a data centre, for privacy, cost or connectivity.",k:["quantization","crop-disease","federated-learning"]},
+"accuracy":{n:"Accuracy",t:1,r:"blocks",d:"The share of predictions that were right. Easy to read and misleading whenever the classes are imbalanced.",k:["precision-recall","class-imbalance","confusion-matrix"]},
+"precision-recall":{n:"Precision and recall",t:1,r:"blocks",d:"Precision: of the things you flagged, how many were real. Recall: of the real things, how many you caught.",x:"The trade is a product decision, not a modelling one. Review capacity, medical follow up cost and moderation policy each pick a different point.",k:["f1","roc-auc","class-imbalance"]},
+"f1":{n:"F1 score",t:1,r:"blocks",d:"The harmonic mean of precision and recall, for when you want one number and care about both.",k:["precision-recall","accuracy"]},
+"roc-auc":{n:"ROC AUC and PR AUC",t:2,r:"blocks",d:"Threshold free summaries of ranking quality.",x:"ROC AUC flatters imbalanced problems because true negatives are plentiful. PR AUC is the honest one when positives are rare.",k:["precision-recall","class-imbalance","ranking"]},
+"confusion-matrix":{n:"Confusion matrix",t:1,r:"blocks",d:"The full table of predicted against actual classes. Every other classification metric is a summary of it.",k:["accuracy","precision-recall"]},
+"regression-metrics":{n:"RMSE, MAE and R squared",t:1,r:"blocks",d:"Regression scores: RMSE punishes big misses, MAE treats all errors equally, R squared reports the share of variance explained.",k:["regression-task","mse-loss"]},
+"calibration":{n:"Calibration",t:3,r:"blocks",d:"Whether a stated 70 percent confidence really means right about 70 percent of the time. Separate from accuracy, and often worse than assumed.",x:"It matters enormously wherever a human or a downstream rule acts on the probability rather than the label.",k:["logistic-regression","cross-entropy","human-in-the-loop"]},
+"perplexity":{n:"Perplexity",t:3,r:"blocks",d:"How surprised a language model is by held out text. Lower is better, and it correlates only loosely with usefulness.",k:["llm","benchmark","human-eval"]},
+"bleu-rouge":{n:"BLEU, ROUGE and friends",t:3,r:"blocks",d:"Overlap based scores for translation and summarisation. Cheap, reproducible, and weakly related to whether a human finds the output good.",k:["human-eval","benchmark","nlp"]},
+"human-eval":{n:"Human evaluation",t:2,r:"blocks",d:"Structured rating by people, with a rubric and multiple raters. Still the ground truth for generative systems.",x:"Budget for it. Pairwise comparison is more reliable than absolute scoring, and agreement between raters is the number to report.",k:["rlhf","annotation","ab-test"]},
+"ab-test":{n:"A/B test",t:1,r:"blocks",d:"Randomly split live traffic between variants and measure the outcome you actually care about. The only evaluation that captures real user behaviour.",k:["bandit","statistics","model-monitoring"]},
+"fairness-metrics":{n:"Fairness metrics",t:2,r:"blocks",d:"Measures of whether outcomes differ across groups: demographic parity, equal opportunity, equalised odds.",x:"They are mathematically incompatible with one another in the general case. Choosing which to satisfy is a policy decision that has to be made explicitly.",k:["algorithmic-bias","responsible-ai","credit-scoring"]},
+"benchmark":{n:"Benchmarks",t:2,r:"blocks",d:"A shared dataset and metric for comparing systems.",x:"Watch for contamination, where the test set has leaked into pretraining data, and for saturation, where every model scores near the ceiling and the benchmark stops discriminating.",k:["human-eval","perplexity","arxiv"]},
+
+/* ── R6 Applications ── */
+"medical-imaging":{n:"Medical imaging",t:2,r:"apps",d:"Detection and segmentation on X-ray, CT, MRI and pathology slides, usually as a second reader working alongside a clinician.",x:"Evaluate per subgroup and per scanner. A model that is excellent overall and weak on one device or one demographic is not deployable.",k:["cnn","computer-vision","fairness-metrics"]},
+"clinical-nlp":{n:"Clinical NLP",t:2,r:"apps",d:"Pulling structure out of free text notes: diagnoses, medications, findings, and codes for billing.",k:["nlp","document-extraction","pii-governance"]},
+"drug-discovery":{n:"Drug discovery",t:3,r:"apps",d:"Screening and generating candidate molecules, predicting binding and toxicity, and prioritising the few worth synthesising.",k:["gnn","protein-structure","diffusion-model"]},
+"protein-structure":{n:"Protein structure prediction",t:3,r:"apps",d:"Predicting a protein's folded shape from its sequence, the problem AlphaFold largely solved and which reshaped structural biology.",k:["drug-discovery","transformer"]},
+"risk-prediction":{n:"Clinical risk prediction",t:2,r:"apps",d:"Estimating who is likely to deteriorate, be readmitted or miss an appointment, so scarce attention goes to the right patients.",k:["calibration","gradient-boosting","human-in-the-loop"]},
+"perception-stack":{n:"Perception stack",t:2,r:"apps",d:"The layered pipeline turning raw sensor data into tracked objects: detection, classification, tracking and prediction.",k:["sensor-fusion","cnn","path-planning"]},
+"sensor-fusion":{n:"Sensor fusion",t:3,r:"apps",d:"Combining camera, radar, lidar and inertial data so the weaknesses of one sensor are covered by another.",k:["perception-stack","slam"]},
+"slam":{n:"SLAM",f:"Simultaneous localisation and mapping",t:3,r:"apps",d:"Building a map of an unknown space while working out where you are within it.",k:["robotics","sensor-fusion","path-planning"]},
+"path-planning":{n:"Path planning",t:2,r:"apps",d:"Choosing a safe, comfortable and legal trajectory through the predicted future, then handing it to a controller.",k:["search-algorithm","planning","robotics"]},
+"adas-levels":{n:"Autonomy levels (SAE 0 to 5)",t:1,r:"apps",d:"The shared scale from driver assistance up to full autonomy. Almost every consumer system on sale is level 2.",k:["perception-stack","ai-regulation"]},
+"demand-forecasting":{n:"Demand forecasting",t:2,r:"apps",d:"Predicting where and when demand will appear, so vehicles, staff or stock are positioned in advance.",k:["forecasting","concept-drift"]},
+"adaptive-learning":{n:"Adaptive learning",t:2,r:"apps",d:"Adjusting what a learner sees next based on what they have already shown they can do.",k:["knowledge-tracing","recommender-system"]},
+"knowledge-tracing":{n:"Knowledge tracing",t:3,r:"apps",d:"Modelling a learner's mastery of each concept over time from their answer history.",k:["adaptive-learning","rnn"]},
+"automated-scoring":{n:"Automated scoring",t:2,r:"apps",d:"Machine marking of open responses and essays, usually with a human review band around the uncertain middle.",k:["human-in-the-loop","calibration","nlp"]},
+"content-generation":{n:"Learning content generation",t:2,r:"apps",d:"Generating practice items, explanations and variants pitched at the level a particular learner needs.",k:["llm","adaptive-learning","human-in-the-loop"]},
+"recommender-system":{n:"Recommender system",t:1,r:"apps",d:"Deciding what to show next from a very large catalogue, usually as a cheap retrieval stage followed by an expensive ranking stage.",x:"Optimise the metric you can defend. Engagement is easy to measure and diverges from user welfare faster than most teams expect.",k:["collaborative-filtering","two-tower","ranking"]},
+"collaborative-filtering":{n:"Collaborative filtering",t:2,r:"apps",d:"Recommending on the basis that people who agreed before will agree again, with no need to understand the items themselves.",k:["recommender-system","association-rules","embedding"]},
+"two-tower":{n:"Two-tower retrieval",t:3,r:"apps",d:"One encoder for users and one for items, both producing vectors in a shared space, so retrieval becomes a nearest neighbour lookup.",k:["embedding","knn","ranking"]},
+"generative-media":{n:"Generative media",t:2,r:"apps",d:"Producing images, video, music, voice and text as production assets, with provenance and rights as live constraints.",k:["diffusion-model","gan","ai-regulation"]},
+"super-resolution":{n:"Super-resolution",t:3,r:"apps",d:"Reconstructing plausible detail when upscaling images or video, including restoration of old footage.",k:["cnn","diffusion-model"]},
+"fraud-detection":{n:"Fraud detection",t:1,r:"apps",d:"Spotting anomalous transactions in real time, increasingly with graph features that reveal rings rather than lone actors.",x:"Extreme class imbalance plus an adversary who adapts. Expect to retrain often and to tune the threshold around review capacity.",k:["anomaly-detection","gnn","class-imbalance"]},
+"credit-scoring":{n:"Credit scoring",t:2,r:"apps",d:"Estimating repayment risk under regulation that usually demands an explainable and auditable model.",k:["logistic-regression","fairness-metrics","model-risk"]},
+"algorithmic-trading":{n:"Algorithmic trading",t:3,r:"apps",d:"Signal generation and execution under latency and risk limits, in an environment that reacts to your own actions.",k:["forecasting","latency-throughput","concept-drift"]},
+"aml-screening":{n:"AML and sanctions screening",t:2,r:"apps",d:"Flagging suspicious flows and matching names against watchlists, tuned to keep false positives reviewable.",k:["precision-recall","human-in-the-loop","gnn"]},
+"document-extraction":{n:"Document extraction",t:1,r:"apps",d:"Reading invoices, claims, statements and contracts into structured fields. One of the most reliably profitable applications.",k:["multimodal","clinical-nlp","human-in-the-loop"]},
+"model-risk":{n:"Model risk management",t:2,r:"apps",d:"The governance regime banks apply to models: validation, documentation, monitoring and independent challenge before anything goes live.",k:["ai-governance","model-card","interpretability"]},
+"remote-sensing":{n:"Remote sensing",t:2,r:"apps",d:"Satellite and drone imagery analysed for land use, crop health, deforestation and flooding.",k:["cnn","ndvi","yield-prediction"]},
+"ndvi":{n:"NDVI and spectral indices",t:3,r:"apps",d:"A vegetation index computed from red and near infrared bands, the standard proxy for plant health seen from the air.",k:["remote-sensing","yield-prediction"]},
+"yield-prediction":{n:"Yield prediction",t:2,r:"apps",d:"Combining weather, soil, satellite and management data to forecast harvest volume.",k:["forecasting","remote-sensing","gradient-boosting"]},
+"crop-disease":{n:"Crop disease detection",t:2,r:"apps",d:"Identifying pests and disease from leaf photographs, often on a phone in the field with an on device model.",k:["cnn","edge-inference","transfer-learning"]},
+"agri-robotics":{n:"Agricultural robotics",t:3,r:"apps",d:"Machines that see and act in the field: selective weeding, thinning and robotic harvesting.",k:["robotics","perception-stack"]},
+"mlops":{n:"MLOps",t:1,r:"apps",d:"The discipline of getting models into production and keeping them healthy: versioning, continuous integration, deployment, monitoring and rollback.",x:"Most projects that fail do not fail at modelling. They fail because nobody owned the retraining, the monitoring or the rollback path.",k:["model-monitoring","model-registry","docker"]},
+"model-monitoring":{n:"Model monitoring",t:2,r:"apps",d:"Watching inputs, predictions and outcomes in production so drift, breakage and degradation are caught before users report them.",k:["data-drift","concept-drift","mlops"]},
+"human-in-the-loop":{n:"Human in the loop",t:1,r:"apps",d:"Designing the system so a person reviews, corrects or approves the cases the model is least sure about.",x:"Route by confidence and feed the corrections back into training. That loop is usually worth more than another point of offline accuracy.",k:["calibration","active-learning","automated-scoring"]},
+"shadow-deployment":{n:"Shadow deployment",t:2,r:"apps",d:"Running a new model alongside the live one on real traffic without acting on its output, to compare before switching.",k:["ab-test","mlops","model-registry"]},
+"model-registry":{n:"Model registry",t:2,r:"apps",d:"The catalogue of model versions with lineage, metrics, approvals, and the ability to roll back to a known good one.",k:["mlops","model-card","git"]},
+"model-card":{n:"Model card",t:2,r:"apps",d:"A short document stating what a model is for, how it was evaluated, and where it should not be used.",k:["ai-governance","fairness-metrics","benchmark"]},
+"ai-regulation":{n:"AI regulation",t:2,r:"apps",d:"Rules governing deployment, risk tier and disclosure, the EU AI Act being the most consequential example so far.",k:["ai-governance","pii-governance","responsible-ai"]},
+
+/* ── R7 The journey ── */
+"linear-algebra":{n:"Linear algebra",t:1,r:"journey",d:"Vectors, matrices and their products. Everything a network does is a chain of these operations.",k:["calculus","pca","embedding"]},
+"calculus":{n:"Calculus",t:1,r:"journey",d:"Derivatives and the chain rule, which is exactly what backpropagation computes.",k:["backpropagation","gradient-descent"]},
+"probability":{n:"Probability",t:1,r:"journey",d:"Distributions, conditional probability and Bayes' rule. The language in which uncertainty is expressed.",k:["statistics","bayesian-network","calibration"]},
+"statistics":{n:"Statistics",t:1,r:"journey",d:"Sampling, estimation, significance and confidence. What keeps you from believing noise.",x:"The most common gap in self taught practitioners, and the one that causes the most expensive mistakes.",k:["ab-test","cross-validation","sampling"]},
+"python":{n:"Python",t:1,r:"journey",d:"The field's working language. Comfort with functions, classes, environments and packaging goes a long way.",k:["numpy-pandas","scikit-learn","git"]},
+"numpy-pandas":{n:"NumPy and pandas",t:1,r:"journey",d:"Array maths and dataframes. Most of a real project is spent here rather than in the model.",k:["python","feature-engineering"]},
+"scikit-learn":{n:"scikit-learn",t:1,r:"journey",d:"The standard library for classical ML: a consistent fit and predict interface, preprocessing, model selection and metrics.",x:"Learn Pipeline and ColumnTransformer early. They are what stop preprocessing from leaking across your splits.",k:["data-leakage","cross-validation","gradient-boosting"]},
+"pytorch":{n:"PyTorch",t:1,r:"journey",d:"The dominant deep learning framework in research and, increasingly, in production.",k:["cuda","tensorflow-jax","gpu"]},
+"tensorflow-jax":{n:"TensorFlow and JAX",t:2,r:"journey",d:"The main alternatives: TensorFlow with a mature serving and mobile story, JAX favoured for large scale research.",k:["pytorch","tpu","distributed-training"]},
+"notebooks":{n:"Notebooks (Jupyter, Colab)",t:1,r:"journey",d:"Fast iteration with visible intermediate results, and free GPU access on Colab.",k:["python","git"]},
+"git":{n:"Git",t:1,r:"journey",d:"Version control. Non negotiable the moment more than one person, or more than one experiment, is involved.",k:["docker","model-registry","mlops"]},
+"docker":{n:"Docker",t:2,r:"journey",d:"Packaging code, dependencies and runtime together so a model behaves the same on your machine and in production.",k:["mlops","git"]},
+"open-datasets":{n:"Open datasets",t:1,r:"journey",d:"Public data to practise on: Hugging Face Datasets, the UCI repository, Kaggle, and domain specific archives.",k:["kaggle","dataset"]},
+"kaggle":{n:"Kaggle",t:1,r:"journey",d:"Competitions and public notebooks. The fastest way to see how strong practitioners actually approach a problem.",x:"Read the winning write ups even for competitions you did not enter. That is where the transferable technique lives.",k:["gradient-boosting","portfolio-project","open-datasets"]},
+"portfolio-project":{n:"Portfolio project",t:1,r:"journey",d:"One end to end project you chose, shipped and can defend. Worth more than a stack of certificates.",k:["mlops","kaggle","docker"]},
+"reproduce-paper":{n:"Reproducing a paper",t:2,r:"journey",d:"Rebuilding a published result from the paper itself. Slow, humbling, and the fastest route to real depth.",k:["arxiv","ablation-study","reading-a-paper"]},
+"ablation-study":{n:"Ablation study",t:3,r:"journey",d:"Removing one component at a time to show which parts of a system actually earn their place.",k:["reproduce-paper","benchmark"]},
+"arxiv":{n:"arXiv and Papers with Code",t:2,r:"journey",d:"Where the field publishes first. Papers with Code links results to implementations, which is usually the faster entry point.",k:["reading-a-paper","benchmark","reproduce-paper"]},
+"reading-a-paper":{n:"Reading a paper",t:2,r:"journey",d:"A workable order: abstract, figures, results, method, then related work. Decide whether it matters to you before reading it linearly.",k:["arxiv","ablation-study"]},
+"ml-engineer":{n:"ML engineer",t:1,r:"journey",d:"Builds and ships model backed systems. Software engineering depth plus enough modelling to make sound choices.",k:["mlops","docker","pytorch"]},
+"data-scientist":{n:"Data scientist",t:1,r:"journey",d:"Frames the question, analyses the data and answers it. Statistics and communication carry more weight than architectures.",k:["statistics","numpy-pandas","ab-test"]},
+"research-scientist":{n:"Research scientist",t:2,r:"journey",d:"Produces new methods. Usually needs a research track record and deep mathematical fluency.",k:["arxiv","ablation-study","scaling-laws"]},
+"mlops-engineer":{n:"MLOps engineer",t:2,r:"journey",d:"Owns the infrastructure, deployment and reliability of models in production.",k:["mlops","model-registry","model-monitoring"]},
+"ai-product":{n:"AI product manager",t:2,r:"journey",d:"Decides what to build, defines acceptable error, and designs the interface around a system that is confidently wrong sometimes.",k:["human-in-the-loop","ab-test","model-card"]},
+"responsible-ai":{n:"Responsible AI practitioner",t:2,r:"journey",d:"Assesses impact, fairness, safety and compliance before and after launch, and holds the authority to say no.",k:["fairness-metrics","ai-governance","ai-regulation"]}
+};
+
+/* ═══ REGIONS ══════════════════════════════════════════════ */
+const R = [
+{
+ id:"ai", code:"R1", name:"Artificial Intelligence", plate:"Artificial Intelligence", alias:"AI",
+ role:"Outer scope", hue:"--h-ai",
+ geo:{k:"e",cx:420,cy:300,rx:340,ry:230}, lab:{x:420,y:118,s:20}, gloss:{x:420,y:140,t:"the whole territory"}, cod:{x:420,y:96},
+ plain:"AI is the <b>entire territory</b>: any technique that makes a machine do something we would call intelligent. Learning from data is one route in, and the busiest one right now, but plenty of working AI still runs on rules a person wrote down by hand.",
+ deep:"AI is the umbrella discipline over search, logic, probabilistic reasoning, planning, control and learning. The useful split is <b>who writes the decision procedure</b>: a human encodes it (symbolic systems, search, constraint solvers) or it is fitted from data (machine learning). Almost every shipped product is a hybrid, with learned components sitting inside hand written control flow, and most production incidents happen at that seam rather than inside the model.",
+ facets:[
+  {t:"Two families under one roof",b:"Symbolic AI states its rules explicitly and can be audited line by line. Statistical AI infers behaviour from examples and generalises to cases nobody listed.",ex:["Tax rules engine vs fraud model","Chess by search vs chess by self play","Clinical protocol vs risk score"]},
+  {t:"The agent loop",b:"Perceive, decide, act, observe the consequence, repeat. Framing a system this way makes its failure points visible: bad perception, wrong objective, or a control loop with no stop condition.",ex:["Robot vacuum","Trading agent","A model calling tools"]},
+  {t:"How wide is the intelligence",b:"Everything deployed today is narrow: excellent inside its task, blank outside it. General intelligence remains a research goal and a policy debate, not a product category.",ex:["Narrow (ANI)","General (AGI)","Super (ASI)"]},
+  {t:"The parts that are not modelling",b:"Evaluation, interpretability, safety and governance decide whether a capable model becomes a usable product. On most real projects they consume more calendar time than training does.",ex:["Model cards","Red teaming","Approval and rollback"]}
+ ],
+ clusters:[
+  {h:"Rule and search based AI",t:["symbolic-ai","expert-system","knowledge-graph","search-algorithm","minimax","csp","planning","bayesian-network","fuzzy-logic"]},
+  {h:"Agents and behaviour",t:["agent","tool-use","multi-agent"]},
+  {h:"Scope and claims",t:["narrow-ai","agi","turing-test"]},
+  {h:"Subfields",t:["nlp","computer-vision","speech-processing","robotics","information-retrieval"]},
+  {h:"Responsibility",t:["ai-alignment","interpretability","algorithmic-bias","ai-governance"]}
+ ]
+},
+{
+ id:"ml", code:"R2", name:"Machine Learning", plate:"Machine Learning", alias:"ML",
+ role:"Inner scope", hue:"--h-ml",
+ geo:{k:"e",cx:420,cy:322,rx:255,ry:170}, lab:{x:420,y:205,s:17}, gloss:{x:420,y:226,t:"learning from examples"}, cod:{x:420,y:184},
+ plain:"Machine learning is the part of AI where <b>you do not write the rules</b>. You show the system enough examples, it works out the pattern connecting inputs to answers, and then it applies that pattern to cases it has never seen.",
+ deep:"ML fits a function from data by minimising a loss over a hypothesis class. The whole discipline is a negotiation with <b>generalisation</b>: regularisation, validation, ensembling and early stopping all exist to stop the model fitting the sample rather than the underlying process. Choosing a model is really choosing an inductive bias, and when data is scarce that bias does more of the work than the data does.",
+ facets:[
+  {t:"The contract",b:"Data in, a fitted function out, judged only on data it has never seen. Training performance is a diagnostic, never a result.",ex:["Fit on train","Tune on validation","Report on test"]},
+  {t:"Where it goes wrong",b:"Two failure directions and one silent killer: too complex and it memorises, too simple and it misses the pattern, and leakage makes both look fine until launch.",ex:["Overfitting","Underfitting","Data leakage"]},
+  {t:"Shapes of problem",b:"Most business problems reduce to a handful of shapes. Naming the shape correctly determines the metric, the split strategy and half the modelling decisions.",ex:["Classification","Regression","Ranking","Forecasting"]},
+  {t:"Why it beats hand written rules",b:"Rules break where reality is messy, high dimensional or drifting. Learning handles all three, at the cost of needing data and of being harder to explain.",ex:["Spam that mutates weekly","Fraud that adapts","Taste that varies by person"]}
+ ],
+ clusters:[
+  {h:"The learning setup",t:["feature","label","split","generalization","inductive-bias"]},
+  {h:"Where it goes wrong",t:["overfitting","underfitting","bias-variance","data-leakage","class-imbalance","curse-of-dimensionality","concept-drift"]},
+  {h:"How fitting works",t:["loss-function","gradient-descent","hyperparameter","regularization","cross-validation","ensemble"]},
+  {h:"Shapes of problem",t:["classification","regression-task","ranking","forecasting"]}
+ ]
+},
+{
+ id:"dl", code:"R3", name:"Deep Learning", plate:"Deep Learning", alias:"DL",
+ role:"Innermost scope", hue:"--h-dl",
+ geo:{k:"e",cx:420,cy:352,rx:158,ry:102}, lab:{x:420,y:348,s:15}, gloss:{x:420,y:368,t:"many layered networks"}, cod:{x:420,y:327},
+ plain:"Deep learning is machine learning done with neural networks that stack <b>many layers</b>. Each layer builds on the one before, so early layers find edges and sounds while later ones find faces and phrases. It is what made image, speech and language systems suddenly work.",
+ deep:"Deep learning replaces hand designed features with representations learned end to end by gradient descent through many layers. <b>Architecture encodes the prior</b>: convolution assumes locality and translation invariance, recurrence assumes sequential dependence, attention assumes any position may matter to any other. The transformer's real contribution was parallelism, which converted model quality into a compute and data budget, and scaling laws, pretraining economics and the fine tuning market all follow from that.",
+ facets:[
+  {t:"Depth is composition",b:"Each layer transforms the previous one's output, so the network builds a hierarchy of features instead of reading raw input directly.",ex:["Edges to shapes to objects","Characters to words to intent"]},
+  {t:"Architecture is assumption",b:"Pick the architecture that matches the structure of your data. Grids want convolution, sequences want attention, graphs want message passing.",ex:["Images: CNN, ViT","Text and audio: Transformer","Molecules and networks: GNN"]},
+  {t:"Generative families",b:"Four ways to produce new data rather than label existing data, differing in training stability and in what each sample costs.",ex:["GAN","VAE","Diffusion","Autoregressive LLM"]},
+  {t:"Almost nobody trains from scratch",b:"The practical workflow is to take a strong pretrained checkpoint and adapt it: fine tune it, attach small adapters, or leave the weights alone and retrieve context at query time.",ex:["Fine tuning","LoRA adapters","RAG","Distillation"]}
+ ],
+ clusters:[
+  {h:"The basic machine",t:["neuron","mlp","parameters","activation-function","backpropagation"]},
+  {h:"Vision architectures",t:["cnn","convolution","pooling","receptive-field","resnet","vision-transformer"]},
+  {h:"Sequence architectures",t:["rnn","vanishing-gradient","lstm","gru","attention","transformer","positional-encoding","tokenization","embedding","llm"]},
+  {h:"Generative families",t:["gan","vae","autoencoder","diffusion-model","sampling-temperature"]},
+  {h:"Beyond grids and sequences",t:["gnn","multimodal"]},
+  {h:"Making them practical",t:["transfer-learning","fine-tuning","lora","distillation","pretraining","dropout","normalization","moe","scaling-laws","rag","in-context-learning"]}
+ ]
+},
+{
+ id:"types", code:"R4", name:"Types of Learning", plate:"Types of Learning", alias:"Paradigms",
+ role:"Method", hue:"--h-types",
+ geo:{k:"r",x:800,y:56,w:172,h:150}, lab:{x:886,y:118,s:14.5,wrap:["Types of","Learning"]}, gloss:{x:886,y:160,t:"four setups"}, cod:{x:886,y:82},
+ plain:"There are a few different ways a machine can learn. It can study <b>with the answers provided</b>, explore data with <b>no answers at all</b>, or learn by <b>trying things and collecting rewards</b>. Which setup you choose depends on what kind of data you can actually get hold of.",
+ deep:"The paradigms are distinguished by what supervision signal exists. Supervised learning has paired inputs and targets. Unsupervised learning has structure only. Reinforcement learning has delayed, sparse, evaluative feedback from an environment that reacts to the agent. <b>Self supervised learning is the pragmatic middle</b> that powers modern pretraining: labels are manufactured from the data itself, which is the only reason unlabelled scale became usable.",
+ facets:[
+  {t:"Supervised: study with the answers",b:"You have inputs paired with correct outputs and the model learns the mapping. The most common setting in industry, and the one that consumes the annotation budget.",ex:["Spam labelled by users","Prices from past sales","Diagnoses from records"]},
+  {t:"Unsupervised: find the structure",b:"No answers, only data. The model groups, compresses or flags what is unusual, and a human decides whether the structure it found means anything.",ex:["Customer segments","Topic discovery","Anomaly flags"]},
+  {t:"Reinforcement: learn by consequence",b:"An agent acts, receives reward and adjusts. Powerful where good behaviour is easy to score but hard to demonstrate, and fragile because the agent optimises the reward you actually wrote.",ex:["Game play","Robot control","Preference tuning of LLMs"]},
+  {t:"Self supervised: invent the labels",b:"Hide part of the input and predict it. No annotation required, which is how models came to be trained on internet scale corpora at all.",ex:["Next token prediction","Masked image patches","Contrastive audio"]}
+ ],
+ clusters:[
+  {h:"Supervised: study with the answers",t:["linear-regression","logistic-regression","decision-tree","random-forest","gradient-boosting","svm","knn","naive-bayes"]},
+  {h:"Unsupervised: find the structure",t:["k-means","hierarchical-clustering","dbscan","gmm","pca","tsne-umap","association-rules","anomaly-detection","topic-modelling"]},
+  {h:"Reinforcement: learn by consequence",t:["mdp","policy","reward-function","exploration-exploitation","q-learning","dqn","policy-gradient","ppo","actor-critic","mcts","bandit","rlhf"]},
+  {h:"In between and beyond",t:["self-supervised","semi-supervised","active-learning","federated-learning","meta-learning","online-learning","transfer-learning"]}
+ ]
+},
+{
+ id:"blocks", code:"R5", name:"Building Blocks", plate:"Building Blocks", alias:"Infrastructure",
+ role:"Infrastructure", hue:"--h-blocks",
+ geo:{k:"r",x:800,y:226,w:172,h:150}, lab:{x:886,y:288,s:14.5,wrap:["Building","Blocks"]}, gloss:{x:886,y:330,t:"what it runs on"}, cod:{x:886,y:252},
+ plain:"Four things must be in place before any of this works: <b>data</b> to learn from, an <b>algorithm</b> to learn with, <b>machines</b> to run it on, and an honest way to <b>check</b> whether the result is any good. Weakness in any one of them caps everything else.",
+ deep:"These four are the resource constraints of any ML system and they trade against each other. Data quality sets the ceiling, the algorithm and its inductive bias decide how efficiently you approach it, compute decides what is affordable to train and (more importantly over a system's life) to serve, and evaluation decides whether you can tell any of it apart. The common organisational failure is <b>investing heavily in the first three while evaluating with a single number on a stale holdout set</b>.",
+ facets:[
+  {t:"Data sets the ceiling",b:"Coverage, balance and label quality bound the best result any model can reach. Measure how often two humans agree before expecting a model to do better.",ex:["Annotation quality","Augmentation","Versioning","Consent and retention"]},
+  {t:"Algorithms turn error into updates",b:"A loss defines what wrong means, an optimiser decides how far to move, and a schedule decides how those steps change over the course of training.",ex:["Cross entropy","AdamW","Warmup and decay","Early stopping"]},
+  {t:"Compute is a budget, not a resource",b:"Memory usually binds before speed does, and lifetime serving cost usually exceeds training cost. Quantisation and distillation are commercial decisions as much as technical ones.",ex:["VRAM limits","Quantisation","Batching","Edge inference"]},
+  {t:"Evaluation is the whole game",b:"Pick the metric that matches the decision the model feeds. Then check calibration, check subgroups, and confirm it in a live test before believing any of it.",ex:["Precision and recall","PR AUC","Calibration","A/B test"]}
+ ],
+ clusters:[
+  {h:"Data",t:["dataset","annotation","feature-engineering","data-augmentation","data-pipeline","sampling","synthetic-data","data-drift","pii-governance"]},
+  {h:"Algorithms and training",t:["optimizer","learning-rate","batch-size","epoch","early-stopping","weight-init","cross-entropy","mse-loss","hyperparameter-search"]},
+  {h:"Computing power",t:["gpu","tpu","cuda","vram","distributed-training","mixed-precision","quantization","inference-vs-training","latency-throughput","edge-inference"]},
+  {h:"Evaluation",t:["accuracy","precision-recall","f1","roc-auc","confusion-matrix","regression-metrics","calibration","perplexity","bleu-rouge","human-eval","ab-test","fairness-metrics","benchmark"]}
+ ]
+},
+{
+ id:"apps", code:"R6", name:"Real-World Applications", plate:"Applications", alias:"In the field",
+ role:"Practice", hue:"--h-apps",
+ geo:{k:"r",x:800,y:396,w:172,h:150}, lab:{x:886,y:466,s:14.5,wrap:["Applications"]}, gloss:{x:886,y:492,t:"where it lands"}, cod:{x:886,y:422},
+ plain:"The same handful of techniques turn up everywhere, wearing different clothes. <b>Recognising an image, ranking a list, predicting a number and pulling fields out of a document</b> cover a striking share of real deployments across every industry on this map.",
+ deep:"Domains differ less in method than in <b>constraint</b>. Healthcare and finance are regulated, so explainability, audit trail and model risk governance shape the architecture. Transport is real time and safety critical, so latency budgets and sensor redundancy dominate. Consumer media optimises engagement metrics that diverge from user welfare. What separates a shipped system from a notebook is the surrounding apparatus: monitoring, human review routing, rollback, and a named owner for retraining.",
+ facets:[
+  {t:"Healthcare",b:"Imaging as a second reader, structure extracted from clinical notes, and risk scores that direct scarce clinical attention. Regulated, and evaluated per subgroup.",ex:["Imaging triage","Clinical NLP","Drug discovery","Readmission risk"]},
+  {t:"Transportation",b:"A perception stack turning sensors into tracked objects, a prediction of what they will do next, and a planner choosing a safe trajectory, all inside a hard latency budget.",ex:["Sensor fusion","SLAM","Path planning","Fleet demand"]},
+  {t:"Education",b:"Adjusting what a learner sees next from what they have shown they know, plus machine marking with human review wherever the model is unsure.",ex:["Adaptive paths","Knowledge tracing","Automated scoring"]},
+  {t:"Entertainment and media",b:"Retrieve a few hundred candidates cheaply, rank them expensively, and generate assets. Provenance and rights are now first order design constraints.",ex:["Recommenders","Two tower retrieval","Generative media"]},
+  {t:"Finance",b:"Fraud, credit, screening and document processing, under model risk governance that demands validation and documentation before anything goes live.",ex:["Fraud graphs","Credit scoring","AML screening","Document extraction"]},
+  {t:"Agriculture and environment",b:"Satellite and drone imagery for land and crop health, on device models for spotting disease in the field, and machines that act on what they see.",ex:["Remote sensing","NDVI","Yield forecasts","Robotic weeding"]},
+  {t:"Keeping it alive",b:"Monitoring, human review routing, shadow deployment and rollback. This is the difference between a demo and a system.",ex:["MLOps","Drift monitoring","Human in the loop","Model registry"]}
+ ],
+ clusters:[
+  {h:"Healthcare",t:["medical-imaging","clinical-nlp","risk-prediction","drug-discovery","protein-structure"]},
+  {h:"Transportation",t:["perception-stack","sensor-fusion","slam","path-planning","adas-levels","demand-forecasting"]},
+  {h:"Education",t:["adaptive-learning","knowledge-tracing","automated-scoring","content-generation"]},
+  {h:"Entertainment and media",t:["recommender-system","collaborative-filtering","two-tower","generative-media","super-resolution"]},
+  {h:"Finance",t:["fraud-detection","credit-scoring","aml-screening","document-extraction","algorithmic-trading","model-risk"]},
+  {h:"Agriculture and environment",t:["remote-sensing","ndvi","yield-prediction","crop-disease","agri-robotics"]},
+  {h:"Keeping it alive in production",t:["mlops","model-monitoring","human-in-the-loop","shadow-deployment","model-registry","model-card","ai-regulation"]}
+ ]
+},
+{
+ id:"journey", code:"R7", name:"Your Route In", plate:"Your Route In", alias:"The journey",
+ role:"Route", hue:"--h-journey",
+ geo:{k:"r",x:48,y:556,w:924,h:66}, lab:{x:150,y:587,s:15,wrap:["Your Route In"]}, gloss:{x:150,y:606,t:"start anywhere"}, cod:{x:150,y:572},
+ route:[{x:300,l:"Foundations"},{x:455,l:"Practise"},{x:610,l:"Build"},{x:765,l:"Specialise"},{x:920,l:"Contribute"}],
+ plain:"You do not need to learn this map in order. Get comfortable with Python and handling data, fit a few simple models <b>properly</b>, then build one project end to end that you can explain to someone else. Depth comes from shipping things, not from finishing courses.",
+ deep:"The efficient path front loads what transfers: <b>statistics, evaluation discipline and data handling</b> stay valid while architectures churn. Fit a logistic regression and a gradient boosted tree before any network, because those are the baselines you will be measured against and often the ones you will ship. After that, specialise deliberately: applied engineering, research, MLOps and product each reward a different mix, and holding all four shallowly is the common trap.",
+ facets:[
+  {t:"Foundations that do not expire",b:"Linear algebra, calculus, probability and statistics. Architectures turn over every few years, this layer does not.",ex:["Vectors and matrices","Chain rule","Bayes","Sampling and significance"]},
+  {t:"The working toolkit",b:"Python, arrays and dataframes, then scikit-learn, then one deep learning framework. Add version control and containers as soon as anything leaves your laptop.",ex:["NumPy and pandas","scikit-learn","PyTorch","Git and Docker"]},
+  {t:"How practice compounds",b:"Ship one project end to end, read the winning write ups from competitions, then reproduce a paper. Each step teaches something the previous one cannot.",ex:["Portfolio project","Kaggle solutions","Reproduce a paper"]},
+  {t:"Choose a direction",b:"The roles diverge sharply after the shared foundation. Pick one and go deep rather than sampling all of them at once.",ex:["ML engineer","Data scientist","Research","MLOps","AI product"]}
+ ],
+ clusters:[
+  {h:"Foundations that do not expire",t:["linear-algebra","calculus","probability","statistics"]},
+  {h:"The working toolkit",t:["python","numpy-pandas","scikit-learn","pytorch","tensorflow-jax","notebooks","git","docker"]},
+  {h:"How practice compounds",t:["open-datasets","kaggle","portfolio-project","reproduce-paper","ablation-study"]},
+  {h:"Reading the field",t:["arxiv","reading-a-paper","benchmark"]},
+  {h:"Where you can end up",t:["ml-engineer","data-scientist","research-scientist","mlops-engineer","ai-product","responsible-ai"]}
+ ]
+}
+];
+
+/* ═══ APP ══════════════════════════════════════════════════ */
+const NS = "http://www.w3.org/2000/svg";
+const byId = {}; R.forEach(r => byId[r.id] = r);
+const TIER_NAME = {1:"Foundation", 2:"Working", 3:"Frontier"};
+
+let depth = "new";        // "new" | "pro"
+let current = "ai";
+let openSlug = null;
+
+/* ---- storage (may throw in restricted contexts) ---- */
+function save(){ try{ localStorage.setItem("aifm", JSON.stringify({depth,current})); }catch(e){} }
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem("aifm") || "{}");
+    if(s.depth === "new" || s.depth === "pro") depth = s.depth;
+    if(s.current && byId[s.current]) current = s.current;
+  }catch(e){}
+}
+
+/* ---- svg helpers ---- */
+function el(tag, attrs){
+  const n = document.createElementNS(NS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+}
+function txt(tag, attrs, content){
+  const n = el(tag, attrs);
+  n.textContent = content;
+  return n;
+}
+
+/* ---- basemap: frame, graticule, contours, furniture ---- */
+function buildBasemap(){
+  const g = document.getElementById("basemap");
+  const defs = el("defs");
+  const cp = el("clipPath", {id:"sheet-clip"});
+  cp.appendChild(el("rect", {x:20, y:20, width:960, height:620, rx:2}));
+  defs.appendChild(cp); g.appendChild(defs);
+
+  const inner = el("g", {"clip-path":"url(#sheet-clip)"});
+  for(let x = 100; x < 980; x += 80) inner.appendChild(el("line", {class:"grat", x1:x, y1:20, x2:x, y2:640}));
+  for(let y = 100; y < 640; y += 80) inner.appendChild(el("line", {class:"grat", x1:20, y1:y, x2:980, y2:y}));
+  for(let i = 1; i <= 9; i++){
+    inner.appendChild(el("ellipse", {class:"contour", cx:420, cy:300, rx:52*i, ry:36*i}));
+  }
+  g.appendChild(inner);
+  g.appendChild(el("rect", {class:"frame", x:20, y:20, width:960, height:620, rx:2}));
+  for(let x = 100; x < 980; x += 80){
+    g.appendChild(el("line", {class:"tick", x1:x, y1:20, x2:x, y2:26}));
+    g.appendChild(el("line", {class:"tick", x1:x, y1:634, x2:x, y2:640}));
+  }
+  for(let y = 100; y < 640; y += 80){
+    g.appendChild(el("line", {class:"tick", x1:20, y1:y, x2:26, y2:y}));
+    g.appendChild(el("line", {class:"tick", x1:974, y1:y, x2:980, y2:y}));
+  }
+}
+
+function buildFurniture(){
+  const g = document.getElementById("furniture");
+  g.appendChild(el("path", {class:"contour", d:"M38 52 L38 34 M38 34 L34 40 M38 34 L42 40", "stroke-width":1.2, opacity:".9"}));
+  g.appendChild(txt("text", {class:"furniture", x:38, y:64, "text-anchor":"middle"}, "N"));
+  g.appendChild(txt("text", {class:"furniture", x:964, y:36, "text-anchor":"end"}, "conceptual survey"));
+}
+
+/* ---- regions ---- */
+function buildRegions(){
+  const host = document.getElementById("regions");
+  R.forEach(r => {
+    const g = el("g", {
+      class:"region", "data-id":r.id, tabindex:"0", role:"button",
+      "aria-pressed":"false", "aria-label":r.name + ", " + r.role,
+      style:"--rc:var(" + r.hue + "); --ps:" + r.lab.s
+    });
+    if(r.geo.k === "e"){
+      g.appendChild(el("ellipse", {class:"shape", cx:r.geo.cx, cy:r.geo.cy, rx:r.geo.rx, ry:r.geo.ry}));
+      g.appendChild(el("ellipse", {class:"selring", cx:r.geo.cx, cy:r.geo.cy, rx:r.geo.rx-7, ry:r.geo.ry-7}));
+    }else{
+      g.appendChild(el("rect", {class:"shape", x:r.geo.x, y:r.geo.y, width:r.geo.w, height:r.geo.h, rx:3}));
+      g.appendChild(el("rect", {class:"selring", x:r.geo.x+6, y:r.geo.y+6, width:r.geo.w-12, height:r.geo.h-12, rx:2}));
+    }
+    if(r.route){
+      const first = r.route[0].x, last = r.route[r.route.length-1].x;
+      g.appendChild(el("path", {class:"route", d:"M" + (first-18) + " 590 L" + (last+14) + " 590"}));
+      r.route.forEach(p => {
+        g.appendChild(el("circle", {class:"routedot", cx:p.x, cy:590, r:5}));
+        g.appendChild(txt("text", {class:"routelabel", x:p.x, y:612}, p.l));
+      });
+    }
+    g.appendChild(txt("text", {class:"code", x:r.cod.x, y:r.cod.y}, r.code));
+    const t = el("text", {class:"plate", x:r.lab.x, y:r.lab.y, "font-size":r.lab.s});
+    const lines = r.lab.wrap || [r.plate];
+    lines.forEach((line, i) => {
+      const ts = el("tspan", {x:r.lab.x, dy:(i === 0 ? 0 : Math.round(r.lab.s * 13.5) / 10)});
+      ts.textContent = line;
+      t.appendChild(ts);
+    });
+    g.appendChild(t);
+    g.appendChild(txt("text", {class:"gloss", x:r.gloss.x, y:r.gloss.y}, r.gloss.t));
+
+    g.addEventListener("click", () => selectRegion(r.id));
+    g.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); selectRegion(r.id); }
+    });
+    host.appendChild(g);
+  });
+}
+
+/* ---- chip rail ---- */
+function buildRail(){
+  const rail = document.getElementById("rail");
+  R.forEach(r => {
+    const n = visibleTerms(r).length;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.dataset.id = r.id;
+    b.setAttribute("aria-pressed", "false");
+    b.style.setProperty("--rc", "var(" + r.hue + ")");
+    b.innerHTML = '<span class="sw"></span>' + r.name + ' <span class="ct">' + n + '</span>';
+    b.addEventListener("click", () => selectRegion(r.id));
+    rail.appendChild(b);
+  });
+}
+function refreshRailCounts(){
+  document.querySelectorAll("#rail .chip").forEach(b => {
+    const r = byId[b.dataset.id];
+    b.querySelector(".ct").textContent = visibleTerms(r).length;
+  });
+}
+
+/* ---- term visibility by depth ---- */
+function visibleTerms(r){
+  const out = [];
+  r.clusters.forEach(c => c.t.forEach(s => {
+    if(T[s] && !(depth === "new" && T[s].t === 3) && out.indexOf(s) === -1) out.push(s);
+  }));
+  return out;
+}
+
+/* ---- dossier ---- */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function termChip(slug, home){
+  const t = T[slug];
+  if(!t) return "";
+  const away = t.r !== home ? '<span class="away">' + byId[t.r].code + '</span>' : "";
+  return '<button type="button" class="term" data-slug="' + slug + '" aria-pressed="' +
+    (openSlug === slug) + '" title="' + esc(TIER_NAME[t.t]) + '"><span class="tier t' + t.t +
+    '"></span>' + esc(t.n) + away + '</button>';
+}
+
+function entryHTML(slug){
+  const t = T[slug];
+  if(!t) return "";
+  const home = byId[t.r];
+  const note = (depth === "pro" && t.x)
+    ? '<div class="note"><strong>In practice</strong>' + esc(t.x) + '</div>' : "";
+  const rel = (t.k || []).filter(s => T[s]).map(s =>
+    '<button type="button" class="relbtn" data-rel="' + s + '">' + esc(T[s].n) + '</button>').join("");
+  return '<div class="entry" style="--rc:var(' + home.hue + ')">' +
+    '<div class="entry-top"><div><h4>' + esc(t.n) + '</h4>' +
+    (t.f ? '<div class="full">' + esc(t.f) + '</div>' : "") + '</div>' +
+    '<div class="meta"><span class="badge">' + TIER_NAME[t.t] + '</span>' +
+    '<button type="button" class="badge home" data-jump="' + t.r + '">' + home.code + ' ' + esc(home.name) + '</button>' +
+    '<button type="button" class="close" data-close="1" aria-label="Close term">&#215;</button></div></div>' +
+    '<p class="def">' + esc(t.d) + '</p>' + note +
+    (rel ? '<div class="rel"><span class="lb">See also</span>' + rel + '</div>' : "") +
+    '</div>';
+}
+
+function renderDossier(){
+  const r = byId[current];
+  const host = document.getElementById("dossier");
+  const shown = visibleTerms(r);
+  const lead = depth === "pro" ? r.deep : r.plain;
+
+  const facets = r.facets.map(f =>
+    '<div class="facet"><h4>' + esc(f.t) + '</h4><p>' + esc(f.b) + '</p>' +
+    '<ul>' + f.ex.map(x => '<li>' + esc(x) + '</li>').join("") + '</ul></div>').join("");
+
+  const clusters = r.clusters.map(c => {
+    const list = c.t.filter(s => T[s] && !(depth === "new" && T[s].t === 3));
+    if(!list.length) return "";
+    return '<div class="cluster"><h5>' + esc(c.h) + '</h5><div class="terms">' +
+      list.map(s => termChip(s, r.id)).join("") + '</div></div>';
+  }).join("");
+
+  host.style.setProperty("--rc", "var(" + r.hue + ")");
+  host.innerHTML =
+    '<div class="d-eyebrow"><span class="dot"></span><span class="role">' + esc(r.role) + '</span>' +
+      '<span>' + r.code + '</span><span>' + shown.length + ' terms</span></div>' +
+    '<h2 class="d-title">' + esc(r.name) + '</h2>' +
+    '<div class="d-alias">' + esc(r.alias) + '</div>' +
+    '<p class="d-lead">' + lead + '</p>' +
+    '<section class="sec"><div class="sec-head">In practice</div><div class="facets">' + facets + '</div></section>' +
+    '<section class="sec"><div class="sec-head">Terminology</div>' +
+      '<div id="entry">' + (openSlug ? entryHTML(openSlug) : "") + '</div>' + clusters + '</section>' +
+    '<div class="tips"><span><b>Tiers</b> <span class="tier t1"></span> foundation ' +
+      '<span class="tier t2"></span> working <span class="tier t3"></span> frontier</span>' +
+      '<span><b>Tip</b> press <kbd>/</kbd> to search every term</span></div>';
+
+  host.querySelectorAll(".term").forEach(b =>
+    b.addEventListener("click", () => openTerm(b.dataset.slug)));
+  const entry = host.querySelector("#entry");
+  if(entry){
+    entry.querySelectorAll("[data-rel]").forEach(b =>
+      b.addEventListener("click", () => jumpTo(b.dataset.rel)));
+    const cl = entry.querySelector("[data-close]");
+    if(cl) cl.addEventListener("click", () => { openSlug = null; renderDossier(); });
+    const jp = entry.querySelector("[data-jump]");
+    if(jp) jp.addEventListener("click", () => { const s = openSlug; selectRegion(jp.dataset.jump, s); });
+  }
+}
+
+/* ---- selection ---- */
+function selectRegion(id, keepSlug){
+  if(!byId[id]) return;
+  current = id;
+  openSlug = keepSlug || null;
+  document.getElementById("map").classList.add("picked");
+  document.querySelectorAll("#regions .region").forEach(g => {
+    const on = g.dataset.id === id;
+    g.classList.toggle("on", on);
+    g.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  document.querySelectorAll("#rail .chip").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.id === id ? "true" : "false"));
+  renderDossier();
+  save();
+}
+
+function openTerm(slug){
+  openSlug = (openSlug === slug) ? null : slug;
+  renderDossier();
+  if(openSlug){
+    const e = document.querySelector("#entry .entry");
+    if(e) e.scrollIntoView({block:"nearest", behavior: reduced() ? "auto" : "smooth"});
+  }
+}
+function jumpTo(slug){
+  const t = T[slug]; if(!t) return;
+  if(t.r !== current) selectRegion(t.r, slug);
+  else { openSlug = slug; renderDossier(); }
+  const e = document.querySelector("#entry .entry");
+  if(e) e.scrollIntoView({block:"nearest", behavior: reduced() ? "auto" : "smooth"});
+}
+function reduced(){ return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+/* ---- depth switch ---- */
+function setDepth(mode){
+  depth = mode;
+  document.getElementById("d-new").setAttribute("aria-pressed", mode === "new" ? "true" : "false");
+  document.getElementById("d-pro").setAttribute("aria-pressed", mode === "pro" ? "true" : "false");
+  if(openSlug && depth === "new" && T[openSlug] && T[openSlug].t === 3) openSlug = null;
+  refreshRailCounts();
+  renderDossier();
+  save();
+}
+
+/* ---- search ---- */
+const INDEX = Object.keys(T).map(s => ({
+  s: s,
+  hay: (T[s].n + " " + (T[s].f || "") + " " + s.replace(/-/g," ") + " " + T[s].d).toLowerCase()
+}));
+let cursor = -1, hits = [];
+
+function runSearch(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const box = document.getElementById("results");
+  const count = document.getElementById("qcount");
+  if(q.length < 2){
+    box.hidden = true; hits = []; cursor = -1;
+    count.textContent = Object.keys(T).length;
+    document.getElementById("q").setAttribute("aria-expanded", "false");
+    return;
+  }
+  const rank = s => {
+    const i = T[s].n.toLowerCase().indexOf(q);
+    return i < 0 ? 999 : i;   // name misses rank below name matches
+  };
+  hits = INDEX.filter(i => i.hay.indexOf(q) !== -1)
+    .sort((a,b) => rank(a.s) - rank(b.s) || T[a.s].n.length - T[b.s].n.length)
+    .slice(0, 14);
+  count.textContent = hits.length;
+  cursor = -1;
+  box.innerHTML = hits.length
+    ? hits.map((h,i) => '<button type="button" role="option" data-i="' + i + '" data-slug="' + h.s + '">' +
+        '<span class="tier t' + T[h.s].t + '"></span><span class="rn">' + esc(T[h.s].n) + '</span>' +
+        '<span class="rr">' + byId[T[h.s].r].code + ' ' + esc(byId[T[h.s].r].alias) + '</span></button>').join("")
+    : '<div class="empty">No term matches that. Try CNN, drift, PPO, calibration.</div>';
+  box.hidden = false;
+  document.getElementById("q").setAttribute("aria-expanded", "true");
+  box.querySelectorAll("button").forEach(b =>
+    b.addEventListener("click", () => { closeSearch(); jumpTo(b.dataset.slug); }));
+}
+function closeSearch(){
+  document.getElementById("results").hidden = true;
+  document.getElementById("q").setAttribute("aria-expanded", "false");
+  document.getElementById("qcount").textContent = Object.keys(T).length;
+  cursor = -1;
+}
+function moveCursor(d){
+  if(!hits.length) return;
+  cursor = (cursor + d + hits.length) % hits.length;
+  document.querySelectorAll("#results button").forEach((b,i) => b.classList.toggle("cursor", i === cursor));
+}
+
+/* ---- boot ---- */
+load();
+buildBasemap();
+buildRegions();
+buildFurniture();
+buildRail();
+setDepth(depth);
+selectRegion(current);
+document.getElementById("qcount").textContent = Object.keys(T).length;
+document.getElementById("stat").textContent =
+  Object.keys(T).length + " terms / " + R.length + " regions / 3 tiers";
+
+document.getElementById("d-new").addEventListener("click", () => setDepth("new"));
+document.getElementById("d-pro").addEventListener("click", () => setDepth("pro"));
+
+const qEl = document.getElementById("q");
+qEl.addEventListener("input", runSearch);
+qEl.addEventListener("keydown", e => {
+  if(e.key === "ArrowDown"){ e.preventDefault(); moveCursor(1); }
+  else if(e.key === "ArrowUp"){ e.preventDefault(); moveCursor(-1); }
+  else if(e.key === "Enter"){
+    const pick = hits[cursor >= 0 ? cursor : 0];
+    if(pick){ e.preventDefault(); qEl.blur(); closeSearch(); jumpTo(pick.s); }
+  }
+  else if(e.key === "Escape"){ closeSearch(); qEl.blur(); }
+});
+document.addEventListener("click", e => {
+  if(!e.target.closest(".searchbox")) closeSearch();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "/" && document.activeElement !== qEl){
+    e.preventDefault(); qEl.focus(); qEl.select();
+  }
+});
+</script>
+
+</body>
+</html>
