@@ -313,6 +313,32 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
 .entry .close{margin-left:6px; color:var(--ink3); font-size:16px; line-height:1; padding:2px 5px}
 .entry .close:hover{color:var(--accent)}
 
+.watch{
+  display:flex; align-items:center; gap:11px; margin-top:13px; padding:9px 12px 9px 10px;
+  border:1px solid var(--rule); border-radius:3px; background:var(--sheet);
+  text-decoration:none; color:inherit;
+}
+.watch:hover{border-color:var(--accent); background:var(--sunk)}
+.watch .play{
+  flex:none; width:27px; height:27px; border-radius:50%;
+  background:var(--accent); color:var(--on-accent);
+  display:grid; place-items:center;
+}
+.watch .wt{display:block; font-size:13.5px; font-weight:600; line-height:1.3; color:var(--ink)}
+.watch .wb{
+  display:block; font-family:var(--f-mono); font-size:10px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink3); margin-top:3px;
+}
+/* No curated pick for this term: offer a search rather than a dead end,
+   and keep it visually quieter so it never reads as a recommendation. */
+.watch-find{
+  display:inline-flex; align-items:center; gap:6px; margin-top:11px;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink3); text-decoration:none; border-bottom:1px dotted var(--rule);
+  padding-bottom:1px;
+}
+.watch-find:hover{color:var(--accent-ink); border-bottom-color:var(--accent)}
+.d-watch{margin-top:16px}
 .tips{
   display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:26px; padding-top:14px;
   border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink3);
@@ -471,73 +497,73 @@ const T = {
 "planning":{n:"Automated planning",t:2,r:"ai",d:"Given a start state, a goal and actions with preconditions and effects, produce a sequence of actions that reaches the goal.",x:"The vocabulary is resurfacing in agent frameworks that ask a model to produce a plan before acting.",k:["agent","tool-use","csp"]},
 "bayesian-network":{n:"Bayesian network",t:2,r:"ai",d:"A graph of variables where edges encode conditional dependence, letting you reason about probabilities and update beliefs as evidence arrives.",x:"Good where examples are few but domain knowledge is real, and where you must show why a conclusion was reached.",k:["probability","naive-bayes","interpretability"]},
 "fuzzy-logic":{n:"Fuzzy logic",t:3,r:"ai",d:"Logic with degrees of truth between 0 and 1, used to encode vague human notions such as slightly too warm.",x:"Common in control systems for appliances and cameras rather than in modern data driven AI.",k:["symbolic-ai"]},
-"agent":{n:"Agent",t:1,r:"ai",d:"A system that perceives an environment, decides, acts on it, observes the result, and repeats.",x:"A modern agent is a model plus tools plus memory plus a control loop, and most failures come from the loop rather than the model.",k:["tool-use","multi-agent","policy","planning"]},
-"tool-use":{n:"Tool use and function calling",t:2,r:"ai",d:"Letting a model call external functions, APIs or code instead of answering only from its own weights.",x:"This turns a language model into an actuator, and it is the main new attack surface: everything a tool returns should be treated as untrusted input.",k:["agent","rag","llm"]},
-"multi-agent":{n:"Multi-agent systems",t:3,r:"ai",d:"Several agents that cooperate, compete or negotiate, each with its own objective and partial view of the world.",k:["agent","reward-function"]},
+"agent":{n:"Agent",t:1,r:"ai",d:"A system that perceives an environment, decides, acts on it, observes the result, and repeats.",x:"A modern agent is a model plus tools plus memory plus a control loop, and most failures come from the loop rather than the model.",k:["tool-use","multi-agent","policy","planning"],v:"agents"},
+"tool-use":{n:"Tool use and function calling",t:2,r:"ai",d:"Letting a model call external functions, APIs or code instead of answering only from its own weights.",x:"This turns a language model into an actuator, and it is the main new attack surface: everything a tool returns should be treated as untrusted input.",k:["agent","rag","llm"],v:"agents"},
+"multi-agent":{n:"Multi-agent systems",t:3,r:"ai",d:"Several agents that cooperate, compete or negotiate, each with its own objective and partial view of the world.",k:["agent","reward-function"],v:"agents"},
 "narrow-ai":{n:"Narrow AI (ANI)",t:1,r:"ai",d:"A system competent at one task or a bounded set of tasks. Every deployed AI system today is narrow, however broad it appears.",k:["agi","llm"]},
 "agi":{n:"AGI and ASI",t:1,r:"ai",d:"Artificial general intelligence: a hypothetical system matching human breadth across tasks. Superintelligence goes beyond it. Both are goals and debates, not product categories.",k:["narrow-ai","ai-alignment"]},
-"turing-test":{n:"Turing test",t:1,r:"ai",d:"Turing's 1950 proposal that a machine indistinguishable from a person in conversation should count as thinking.",x:"Useful history, poor benchmark: it rewards imitation and deception rather than competence, which is why the field moved to task specific evaluation.",k:["benchmark","human-eval"]},
+"turing-test":{n:"Turing test",t:1,r:"ai",d:"Turing's 1950 proposal that a machine indistinguishable from a person in conversation should count as thinking.",x:"Useful history, poor benchmark: it rewards imitation and deception rather than competence, which is why the field moved to task specific evaluation.",k:["benchmark","human-eval"],v:"turing"},
 "nlp":{n:"Natural language processing",t:1,r:"ai",d:"The subfield concerned with understanding and generating human language: translation, summarisation, extraction, dialogue.",k:["llm","tokenization","transformer"]},
-"computer-vision":{n:"Computer vision",t:1,r:"ai",d:"The subfield concerned with extracting meaning from images and video: classification, detection, segmentation, tracking and reconstruction.",k:["cnn","vision-transformer","medical-imaging"]},
+"computer-vision":{n:"Computer vision",t:1,r:"ai",d:"The subfield concerned with extracting meaning from images and video: classification, detection, segmentation, tracking and reconstruction.",k:["cnn","vision-transformer","medical-imaging"],v:"cnn"},
 "speech-processing":{n:"Speech processing",t:2,r:"ai",d:"Turning audio into text, text into audio, and identifying who is speaking.",k:["rnn","transformer","multimodal"]},
 "robotics":{n:"Robotics",t:2,r:"ai",d:"AI joined to a physical body, where perception, planning and control must run under real time and safety constraints.",x:"The hard part is rarely the model. It is the gap between simulation and reality, the latency budget, and the fact that a mistake has physical consequences.",k:["slam","path-planning","agri-robotics"]},
 "information-retrieval":{n:"Information retrieval",t:2,r:"ai",d:"Finding relevant items in a large collection: the engineering behind search, and the retrieval half of RAG.",k:["rag","embedding","ranking"]},
-"ai-alignment":{n:"AI alignment",t:2,r:"ai",d:"The problem of making a capable system pursue what its operators and users actually intend, including in situations nobody anticipated.",k:["reward-function","rlhf","ai-governance"]},
+"ai-alignment":{n:"AI alignment",t:2,r:"ai",d:"The problem of making a capable system pursue what its operators and users actually intend, including in situations nobody anticipated.",k:["reward-function","rlhf","ai-governance"],v:"alignment"},
 "interpretability":{n:"Interpretability",t:2,r:"ai",d:"Techniques for explaining why a model produced an output: feature attribution, saliency, probing and circuit level analysis.",x:"Separate global interpretability (how does this model work) from local (why this prediction). SHAP and LIME answer the second, not the first.",k:["algorithmic-bias","model-risk","decision-tree"]},
 "algorithmic-bias":{n:"Algorithmic bias",t:1,r:"ai",d:"Systematic unfairness in a model's outputs, usually inherited from skewed training data or from a proxy variable standing in for a protected attribute.",x:"Bias is a data and objective problem before it is a model problem. Check base rates and label provenance before touching the architecture.",k:["fairness-metrics","annotation","responsible-ai"]},
 "ai-governance":{n:"AI governance",t:2,r:"ai",d:"The policies, documentation and review that decide what a system may be used for, who is accountable, and how it is monitored after launch.",k:["model-card","ai-regulation","model-risk"]},
 
 /* ── R2 Machine Learning ── */
-"feature":{n:"Feature",t:1,r:"ml",d:"An input variable the model reads: a column, a pixel, a word, a derived signal.",k:["feature-engineering","embedding","label"]},
-"label":{n:"Label or target",t:1,r:"ml",d:"The answer a supervised model is trained to reproduce.",k:["annotation","feature"]},
-"split":{n:"Train, validation and test split",t:1,r:"ml",d:"Three disjoint slices of data: one to fit on, one to tune choices against, one touched only at the very end to estimate real performance.",x:"The test set stops being a test set the moment you make a decision from it. Repeated peeking is the most common quiet cause of inflated results.",k:["cross-validation","data-leakage","generalization"]},
-"generalization":{n:"Generalisation",t:1,r:"ml",d:"How well a model performs on data it has never seen. It is the only measure that matters.",k:["overfitting","split","inductive-bias"]},
+"feature":{n:"Feature",t:1,r:"ml",d:"An input variable the model reads: a column, a pixel, a word, a derived signal.",k:["feature-engineering","embedding","label"],v:"mlintro"},
+"label":{n:"Label or target",t:1,r:"ml",d:"The answer a supervised model is trained to reproduce.",k:["annotation","feature"],v:"mlintro"},
+"split":{n:"Train, validation and test split",t:1,r:"ml",d:"Three disjoint slices of data: one to fit on, one to tune choices against, one touched only at the very end to estimate real performance.",x:"The test set stops being a test set the moment you make a decision from it. Repeated peeking is the most common quiet cause of inflated results.",k:["cross-validation","data-leakage","generalization"],v:"xval"},
+"generalization":{n:"Generalisation",t:1,r:"ml",d:"How well a model performs on data it has never seen. It is the only measure that matters.",k:["overfitting","split","inductive-bias"],v:"mlintro"},
 "inductive-bias":{n:"Inductive bias",t:3,r:"ml",d:"The assumptions an algorithm brings before it sees any data: convolutions assume locality, trees assume axis aligned splits, linear models assume additivity.",x:"Choosing a model is choosing an inductive bias. When data is scarce, the bias does more work than the data.",k:["cnn","decision-tree","generalization"]},
-"overfitting":{n:"Overfitting",t:1,r:"ml",d:"The model has memorised the training data, including its noise, and performs worse on new data.",x:"Diagnose from the gap between training and validation curves. Fix with more data, augmentation, regularisation, a simpler model, or early stopping.",k:["regularization","underfitting","early-stopping"]},
-"underfitting":{n:"Underfitting",t:1,r:"ml",d:"The model is too simple or too constrained to capture the real pattern, so it is wrong on both training and new data.",k:["overfitting","bias-variance"]},
-"bias-variance":{n:"Bias and variance trade-off",t:2,r:"ml",d:"Error decomposes into bias (wrong assumptions), variance (sensitivity to the particular sample) and irreducible noise. Reducing one usually raises the other.",k:["overfitting","ensemble","regularization"]},
+"overfitting":{n:"Overfitting",t:1,r:"ml",d:"The model has memorised the training data, including its noise, and performs worse on new data.",x:"Diagnose from the gap between training and validation curves. Fix with more data, augmentation, regularisation, a simpler model, or early stopping.",k:["regularization","underfitting","early-stopping"],v:"biasvar"},
+"underfitting":{n:"Underfitting",t:1,r:"ml",d:"The model is too simple or too constrained to capture the real pattern, so it is wrong on both training and new data.",k:["overfitting","bias-variance"],v:"biasvar"},
+"bias-variance":{n:"Bias and variance trade-off",t:2,r:"ml",d:"Error decomposes into bias (wrong assumptions), variance (sensitivity to the particular sample) and irreducible noise. Reducing one usually raises the other.",k:["overfitting","ensemble","regularization"],v:"biasvar"},
 "data-leakage":{n:"Data leakage",t:2,r:"ml",d:"Information from outside the training window, or from the target itself, sneaking into the features and producing results that are too good to be true.",x:"Classic sources: scaling before splitting, a timestamp derived feature, an identifier that encodes the outcome, duplicate rows across splits.",k:["split","cross-validation","scikit-learn"]},
 "class-imbalance":{n:"Class imbalance",t:2,r:"ml",d:"When one class is far rarer than another, so accuracy becomes meaningless and a model can win by always predicting the majority.",x:"Judge with precision, recall and PR AUC. Fix with class weights, resampling, threshold tuning or a cost sensitive loss.",k:["precision-recall","roc-auc","fraud-detection"]},
-"curse-of-dimensionality":{n:"Curse of dimensionality",t:3,r:"ml",d:"As the number of features grows, data becomes sparse, distances lose meaning, and the volume you would need to cover explodes.",k:["pca","knn","feature-engineering"]},
+"curse-of-dimensionality":{n:"Curse of dimensionality",t:3,r:"ml",d:"As the number of features grows, data becomes sparse, distances lose meaning, and the volume you would need to cover explodes.",k:["pca","knn","feature-engineering"],v:"pca"},
 "concept-drift":{n:"Concept drift",t:2,r:"ml",d:"The relationship between inputs and target changes after deployment, so a once accurate model quietly decays.",x:"Distinguish data drift (the inputs shift) from concept drift (the mapping shifts). Only the second necessarily requires retraining.",k:["data-drift","model-monitoring","online-learning"]},
-"loss-function":{n:"Loss function",t:1,r:"ml",d:"The number the training process tries to make small: how wrong the model currently is.",k:["cross-entropy","mse-loss","gradient-descent"]},
-"gradient-descent":{n:"Gradient descent",t:1,r:"ml",d:"Repeatedly nudge each parameter in the direction that most reduces the loss, in small steps, until it stops improving.",k:["optimizer","backpropagation","learning-rate"]},
+"loss-function":{n:"Loss function",t:1,r:"ml",d:"The number the training process tries to make small: how wrong the model currently is.",k:["cross-entropy","mse-loss","gradient-descent"],v:"graddesc"},
+"gradient-descent":{n:"Gradient descent",t:1,r:"ml",d:"Repeatedly nudge each parameter in the direction that most reduces the loss, in small steps, until it stops improving.",k:["optimizer","backpropagation","learning-rate"],v:"graddesc"},
 "hyperparameter":{n:"Hyperparameter",t:1,r:"ml",d:"A setting you choose before training (tree depth, learning rate, number of estimators), as opposed to a parameter the model learns.",k:["hyperparameter-search","parameters","cross-validation"]},
-"regularization":{n:"Regularisation",t:2,r:"ml",d:"Any deliberate constraint that discourages the model from fitting noise: an L1 or L2 penalty on weights, dropout, early stopping, or simply more data.",k:["overfitting","dropout","early-stopping"]},
-"cross-validation":{n:"Cross-validation",t:2,r:"ml",d:"Split the data k ways, train k times holding out a different fold each time, then average the scores for a more stable estimate than one split gives.",x:"Use grouped or time aware folds when rows are correlated. Random k-fold on a time series leaks the future into the past.",k:["split","forecasting","hyperparameter-search"]},
-"ensemble":{n:"Ensembles",t:2,r:"ml",d:"Combining several models so their errors partly cancel. Bagging averages independent models, boosting fits each new model to the previous ones' mistakes, stacking learns how to blend them.",k:["random-forest","gradient-boosting","bias-variance"]},
-"classification":{n:"Classification",t:1,r:"ml",d:"Predicting a category: spam or not, which of ten digits, which diagnosis.",k:["logistic-regression","cross-entropy","precision-recall"]},
-"regression-task":{n:"Regression (the task)",t:1,r:"ml",d:"Predicting a number: a price, a duration, a temperature.",k:["linear-regression","regression-metrics","mse-loss"]},
+"regularization":{n:"Regularisation",t:2,r:"ml",d:"Any deliberate constraint that discourages the model from fitting noise: an L1 or L2 penalty on weights, dropout, early stopping, or simply more data.",k:["overfitting","dropout","early-stopping"],v:"ridge"},
+"cross-validation":{n:"Cross-validation",t:2,r:"ml",d:"Split the data k ways, train k times holding out a different fold each time, then average the scores for a more stable estimate than one split gives.",x:"Use grouped or time aware folds when rows are correlated. Random k-fold on a time series leaks the future into the past.",k:["split","forecasting","hyperparameter-search"],v:"xval"},
+"ensemble":{n:"Ensembles",t:2,r:"ml",d:"Combining several models so their errors partly cancel. Bagging averages independent models, boosting fits each new model to the previous ones' mistakes, stacking learns how to blend them.",k:["random-forest","gradient-boosting","bias-variance"],v:"adaboost"},
+"classification":{n:"Classification",t:1,r:"ml",d:"Predicting a category: spam or not, which of ten digits, which diagnosis.",k:["logistic-regression","cross-entropy","precision-recall"],v:"trees"},
+"regression-task":{n:"Regression (the task)",t:1,r:"ml",d:"Predicting a number: a price, a duration, a temperature.",k:["linear-regression","regression-metrics","mse-loss"],v:"linreg"},
 "ranking":{n:"Ranking",t:2,r:"ml",d:"Ordering a candidate list by relevance rather than scoring each item in isolation. The core of search and of feeds.",k:["recommender-system","information-retrieval","two-tower"]},
 "forecasting":{n:"Forecasting",t:2,r:"ml",d:"Predicting future values of a series where order and seasonality matter, so ordinary shuffled splits do not apply.",x:"Always validate with a rolling origin. A random split on time series data is the single most common way to publish a fantasy score.",k:["cross-validation","demand-forecasting","concept-drift"]},
 
 /* ── R3 Deep Learning ── */
-"neuron":{n:"Neuron or perceptron",t:1,r:"dl",d:"The unit: multiply inputs by weights, add a bias, pass the result through a nonlinearity.",k:["mlp","activation-function","parameters"]},
-"mlp":{n:"MLP (feedforward network)",t:1,r:"dl",d:"Layers of neurons connected front to back with no loops. The plain baseline architecture.",k:["neuron","backpropagation"]},
-"parameters":{n:"Parameters and weights",t:1,r:"dl",d:"The numbers learned during training. Model size is usually quoted as a parameter count.",k:["hyperparameter","quantization","lora"]},
-"activation-function":{n:"Activation function",t:1,r:"dl",d:"The nonlinearity after each layer (ReLU, GELU, sigmoid, tanh, softmax). Without it, stacked layers collapse into a single linear one.",k:["neuron","vanishing-gradient"]},
-"backpropagation":{n:"Backpropagation",t:1,r:"dl",d:"The chain rule applied backwards through the network to work out how much each weight contributed to the error.",x:"Backpropagation computes gradients; the optimiser decides what to do with them. Conflating the two causes a lot of confusion.",k:["gradient-descent","optimizer","calculus"]},
-"cnn":{n:"CNN",f:"Convolutional neural network",t:1,r:"dl",d:"A network that slides small learned filters across a grid, so the same pattern is detected wherever it appears. The workhorse for images.",x:"Still the pragmatic default for small image datasets and edge deployment: fewer parameters, a strong locality prior, and cheaper than a vision transformer.",k:["convolution","pooling","vision-transformer","computer-vision"]},
-"convolution":{n:"Convolution",t:2,r:"dl",d:"The sliding filter operation itself: a weighted sum over a local patch, repeated across the whole input.",k:["cnn","receptive-field"]},
-"pooling":{n:"Pooling",t:2,r:"dl",d:"Downsampling a feature map, usually by taking the maximum or average of each patch, to shrink it and add tolerance to small shifts.",k:["cnn","receptive-field"]},
+"neuron":{n:"Neuron or perceptron",t:1,r:"dl",d:"The unit: multiply inputs by weights, add a bias, pass the result through a nonlinearity.",k:["mlp","activation-function","parameters"],v:"nn-intro"},
+"mlp":{n:"MLP (feedforward network)",t:1,r:"dl",d:"Layers of neurons connected front to back with no loops. The plain baseline architecture.",k:["neuron","backpropagation"],v:"nnmain"},
+"parameters":{n:"Parameters and weights",t:1,r:"dl",d:"The numbers learned during training. Model size is usually quoted as a parameter count.",k:["hyperparameter","quantization","lora"],v:"nn-intro"},
+"activation-function":{n:"Activation function",t:1,r:"dl",d:"The nonlinearity after each layer (ReLU, GELU, sigmoid, tanh, softmax). Without it, stacked layers collapse into a single linear one.",k:["neuron","vanishing-gradient"],v:"relu"},
+"backpropagation":{n:"Backpropagation",t:1,r:"dl",d:"The chain rule applied backwards through the network to work out how much each weight contributed to the error.",x:"Backpropagation computes gradients; the optimiser decides what to do with them. Conflating the two causes a lot of confusion.",k:["gradient-descent","optimizer","calculus"],v:"backprop"},
+"cnn":{n:"CNN",f:"Convolutional neural network",t:1,r:"dl",d:"A network that slides small learned filters across a grid, so the same pattern is detected wherever it appears. The workhorse for images.",x:"Still the pragmatic default for small image datasets and edge deployment: fewer parameters, a strong locality prior, and cheaper than a vision transformer.",k:["convolution","pooling","vision-transformer","computer-vision"],v:"cnn"},
+"convolution":{n:"Convolution",t:2,r:"dl",d:"The sliding filter operation itself: a weighted sum over a local patch, repeated across the whole input.",k:["cnn","receptive-field"],v:"cnn"},
+"pooling":{n:"Pooling",t:2,r:"dl",d:"Downsampling a feature map, usually by taking the maximum or average of each patch, to shrink it and add tolerance to small shifts.",k:["cnn","receptive-field"],v:"cnn"},
 "receptive-field":{n:"Receptive field",t:3,r:"dl",d:"The region of the original input that influences one unit deep in the network. It grows with depth, stride and dilation.",k:["cnn","convolution"]},
 "resnet":{n:"Residual connection (ResNet)",t:2,r:"dl",d:"A shortcut that adds a layer's input to its output, so gradients have a clean path backwards and very deep networks stay trainable.",x:"The single change that made networks past a hundred layers practical, and it now sits inside almost every transformer block too.",k:["vanishing-gradient","transformer","normalization"]},
 "vision-transformer":{n:"Vision transformer (ViT)",t:3,r:"dl",d:"Cut an image into patches, treat each patch as a token, and run a transformer over them.",x:"Beats CNNs at scale but needs far more data or heavy pretraining. Below that threshold a CNN usually wins.",k:["cnn","transformer","pretraining"]},
-"rnn":{n:"RNN",f:"Recurrent neural network",t:1,r:"dl",d:"A network that reads a sequence one step at a time and carries a hidden state forward, so earlier items influence later ones.",x:"Largely displaced by transformers for language, but still sensible for long streaming signals and small on device sequence models.",k:["lstm","vanishing-gradient","attention"]},
-"vanishing-gradient":{n:"Vanishing gradient",t:2,r:"dl",d:"In deep or long chains, gradients shrink toward zero as they propagate back, so early layers or early timesteps stop learning.",k:["lstm","resnet","activation-function"]},
-"lstm":{n:"LSTM",f:"Long short-term memory",t:2,r:"dl",d:"A recurrent cell with explicit input, forget and output gates deciding what to keep and what to discard, which fixes most of the vanishing gradient problem.",k:["rnn","gru","vanishing-gradient"]},
-"gru":{n:"GRU",f:"Gated recurrent unit",t:3,r:"dl",d:"A lighter LSTM with two gates instead of three. Often the same accuracy with fewer parameters and faster training.",k:["lstm","rnn"]},
-"attention":{n:"Attention",t:1,r:"dl",d:"A mechanism letting each position look at every other position and weight what is relevant, instead of relying on a state passed along step by step.",k:["transformer","positional-encoding","embedding"]},
-"transformer":{n:"Transformer",t:1,r:"dl",d:"The architecture built from stacked self attention and feedforward blocks, processing a whole sequence in parallel.",x:"The parallelism, not the accuracy, was the breakthrough: it turned model quality into a compute and data budget question.",k:["attention","llm","scaling-laws","moe"]},
-"positional-encoding":{n:"Positional encoding",t:3,r:"dl",d:"Because attention has no inherent notion of order, position information is injected explicitly, whether sinusoidal, learned or rotary.",k:["attention","transformer"]},
-"tokenization":{n:"Tokenisation",t:2,r:"dl",d:"Splitting text into the units a model actually reads, usually subword pieces rather than whole words.",x:"Explains a lot of odd behaviour: character counting, arithmetic on long numbers, and why some languages cost more tokens for the same text.",k:["llm","embedding","nlp"]},
-"embedding":{n:"Embedding",t:1,r:"dl",d:"A dense vector representing an item (word, image, user, product) so that similar things sit near each other.",x:"The most reusable artefact in modern ML: one good embedding space powers search, recommendation, clustering, deduplication and retrieval.",k:["rag","two-tower","information-retrieval","pca"]},
-"llm":{n:"LLM",f:"Large language model",t:1,r:"dl",d:"A transformer trained on very large text corpora to predict the next token, then adapted with instruction tuning and preference training.",k:["transformer","rlhf","rag","in-context-learning"]},
+"rnn":{n:"RNN",f:"Recurrent neural network",t:1,r:"dl",d:"A network that reads a sequence one step at a time and carries a hidden state forward, so earlier items influence later ones.",x:"Largely displaced by transformers for language, but still sensible for long streaming signals and small on device sequence models.",k:["lstm","vanishing-gradient","attention"],v:"rnn"},
+"vanishing-gradient":{n:"Vanishing gradient",t:2,r:"dl",d:"In deep or long chains, gradients shrink toward zero as they propagate back, so early layers or early timesteps stop learning.",k:["lstm","resnet","activation-function"],v:"rnn"},
+"lstm":{n:"LSTM",f:"Long short-term memory",t:2,r:"dl",d:"A recurrent cell with explicit input, forget and output gates deciding what to keep and what to discard, which fixes most of the vanishing gradient problem.",k:["rnn","gru","vanishing-gradient"],v:"lstm"},
+"gru":{n:"GRU",f:"Gated recurrent unit",t:3,r:"dl",d:"A lighter LSTM with two gates instead of three. Often the same accuracy with fewer parameters and faster training.",k:["lstm","rnn"],v:"lstm"},
+"attention":{n:"Attention",t:1,r:"dl",d:"A mechanism letting each position look at every other position and weight what is relevant, instead of relying on a state passed along step by step.",k:["transformer","positional-encoding","embedding"],v:"attention"},
+"transformer":{n:"Transformer",t:1,r:"dl",d:"The architecture built from stacked self attention and feedforward blocks, processing a whole sequence in parallel.",x:"The parallelism, not the accuracy, was the breakthrough: it turned model quality into a compute and data budget question.",k:["attention","llm","scaling-laws","moe"],v:"transformer"},
+"positional-encoding":{n:"Positional encoding",t:3,r:"dl",d:"Because attention has no inherent notion of order, position information is injected explicitly, whether sinusoidal, learned or rotary.",k:["attention","transformer"],v:"attention"},
+"tokenization":{n:"Tokenisation",t:2,r:"dl",d:"Splitting text into the units a model actually reads, usually subword pieces rather than whole words.",x:"Explains a lot of odd behaviour: character counting, arithmetic on long numbers, and why some languages cost more tokens for the same text.",k:["llm","embedding","nlp"],v:"tokenizer"},
+"embedding":{n:"Embedding",t:1,r:"dl",d:"A dense vector representing an item (word, image, user, product) so that similar things sit near each other.",x:"The most reusable artefact in modern ML: one good embedding space powers search, recommendation, clustering, deduplication and retrieval.",k:["rag","two-tower","information-retrieval","pca"],v:"word2vec"},
+"llm":{n:"LLM",f:"Large language model",t:1,r:"dl",d:"A transformer trained on very large text corpora to predict the next token, then adapted with instruction tuning and preference training.",k:["transformer","rlhf","rag","in-context-learning"],v:"decoderonly"},
 "sampling-temperature":{n:"Temperature and sampling",t:2,r:"dl",d:"The dial on how randomly a generative model picks its next token. Low is repetitive and safe, high is varied and error prone.",k:["llm","perplexity"]},
-"gan":{n:"GAN",f:"Generative adversarial network",t:2,r:"dl",d:"Two networks in a contest: a generator making fakes and a discriminator judging them, both improving until the fakes are convincing.",x:"Sharp results, notoriously unstable training, and prone to mode collapse. Diffusion models replaced them for most image generation.",k:["diffusion-model","vae","generative-media"]},
+"gan":{n:"GAN",f:"Generative adversarial network",t:2,r:"dl",d:"Two networks in a contest: a generator making fakes and a discriminator judging them, both improving until the fakes are convincing.",x:"Sharp results, notoriously unstable training, and prone to mode collapse. Diffusion models replaced them for most image generation.",k:["diffusion-model","vae","generative-media"],v:"gan"},
 "vae":{n:"VAE",f:"Variational autoencoder",t:3,r:"dl",d:"An autoencoder trained to map data into a smooth probability distribution, so new points can be sampled from that space.",k:["autoencoder","gan","diffusion-model"]},
 "autoencoder":{n:"Autoencoder",t:2,r:"dl",d:"A network trained to compress its input into a bottleneck and rebuild it, learning a compact representation on the way.",x:"Reconstruction error makes a serviceable anomaly detector when you have plenty of normal examples and almost no labelled failures.",k:["anomaly-detection","vae","pca"]},
-"diffusion-model":{n:"Diffusion model",t:2,r:"dl",d:"Learn to reverse a gradual noising process: start from pure noise and denoise step by step into an image, video or audio clip.",x:"Now the default for image and video generation. The trade is quality against sampling steps, which is why distillation and few step samplers matter commercially.",k:["gan","generative-media","distillation"]},
+"diffusion-model":{n:"Diffusion model",t:2,r:"dl",d:"Learn to reverse a gradual noising process: start from pure noise and denoise step by step into an image, video or audio clip.",x:"Now the default for image and video generation. The trade is quality against sampling steps, which is why distillation and few step samplers matter commercially.",k:["gan","generative-media","distillation"],v:"diffusion"},
 "gnn":{n:"GNN",f:"Graph neural network",t:3,r:"dl",d:"A network that passes messages along the edges of a graph, so each node's representation absorbs its neighbourhood.",x:"The natural fit for molecules, fraud rings and social graphs, where the relationships carry more signal than the nodes do.",k:["knowledge-graph","fraud-detection","drug-discovery"]},
 "multimodal":{n:"Multimodal model",t:2,r:"dl",d:"A model that takes in or produces more than one kind of data at once: image with text, audio with video.",k:["llm","vision-transformer","embedding"]},
 "dropout":{n:"Dropout",t:2,r:"dl",d:"Randomly switch off a fraction of units during training so the network cannot depend on any single path. A cheap and effective regulariser.",k:["regularization","overfitting"]},
@@ -549,39 +575,39 @@ const T = {
 "pretraining":{n:"Pretraining",t:2,r:"dl",d:"The first, expensive training phase on broad unlabelled data, before any task specific adaptation.",k:["self-supervised","transfer-learning","scaling-laws"]},
 "moe":{n:"Mixture of experts",t:3,r:"dl",d:"Only a subset of the network's parameters activate for any given input, so total capacity grows without a proportional rise in compute per token.",k:["transformer","scaling-laws","llm"]},
 "scaling-laws":{n:"Scaling laws",t:3,r:"dl",d:"Empirical relationships showing how loss falls predictably as parameters, data and compute increase together.",x:"Their practical value is planning: they say whether the next dollar should go to data, to parameters or to training length.",k:["pretraining","transformer","gpu"]},
-"rag":{n:"RAG",f:"Retrieval augmented generation",t:2,r:"dl",d:"Retrieve relevant documents at query time and place them in the model's context, so answers are grounded in a source you control.",x:"Usually cheaper and more maintainable than fine tuning for factual freshness. Retrieval quality, not the model, is where most RAG systems fail.",k:["embedding","information-retrieval","llm","knowledge-graph"]},
+"rag":{n:"RAG",f:"Retrieval augmented generation",t:2,r:"dl",d:"Retrieve relevant documents at query time and place them in the model's context, so answers are grounded in a source you control.",x:"Usually cheaper and more maintainable than fine tuning for factual freshness. Retrieval quality, not the model, is where most RAG systems fail.",k:["embedding","information-retrieval","llm","knowledge-graph"],v:"rag"},
 "in-context-learning":{n:"In-context learning",t:2,r:"dl",d:"A model adapting its behaviour purely from examples placed in the prompt, with no weight updates at all.",k:["llm","meta-learning","fine-tuning"]},
 
 /* ── R4 Types of ML ── */
-"linear-regression":{n:"Linear regression",t:1,r:"types",d:"Fit a straight line, or a plane, through the data. The simplest model and a genuinely useful baseline.",k:["regression-task","regression-metrics","logistic-regression"]},
-"logistic-regression":{n:"Logistic regression",t:1,r:"types",d:"Linear regression pushed through a sigmoid to produce a probability between 0 and 1. The default baseline for binary classification.",x:"Interpretable, fast, well calibrated and hard to beat on tabular data with few features. Fit one before reaching for anything larger.",k:["classification","calibration","cross-entropy"]},
-"decision-tree":{n:"Decision tree",t:1,r:"types",d:"A cascade of yes or no questions on feature values, ending in a prediction. Easy to read, easy to overfit.",k:["random-forest","gradient-boosting","interpretability"]},
-"random-forest":{n:"Random forest",t:1,r:"types",d:"Hundreds of trees, each trained on a random subset of rows and features, voting together. Robust with almost no tuning.",k:["ensemble","decision-tree","gradient-boosting"]},
-"gradient-boosting":{n:"Gradient boosting (XGBoost, LightGBM, CatBoost)",t:2,r:"types",d:"Trees added one at a time, each fitted to the errors the previous ones left behind.",x:"Still the winner on most tabular problems. If your data is rows and columns rather than pixels or text, start here, not with a neural network.",k:["ensemble","random-forest","hyperparameter-search"]},
-"svm":{n:"SVM",f:"Support vector machine",t:2,r:"types",d:"Find the boundary with the widest margin between classes, optionally after projecting into a higher dimensional space with a kernel.",k:["classification","knn"]},
-"knn":{n:"k-nearest neighbours",t:1,r:"types",d:"Classify a new point by looking at the k closest examples you have already seen. There is no training phase at all.",x:"Conceptually the ancestor of vector search: the same nearest neighbour idea, now run over learned embeddings at scale.",k:["embedding","curse-of-dimensionality","information-retrieval"]},
-"naive-bayes":{n:"Naive Bayes",t:2,r:"types",d:"Apply Bayes' rule while pretending the features are independent. A crude assumption that works surprisingly well for text.",k:["bayesian-network","nlp","probability"]},
-"k-means":{n:"k-means",t:1,r:"types",d:"Partition data into k groups by repeatedly assigning points to the nearest centre and moving the centres.",x:"You must pick k, it assumes round clusters of similar size, and it is sensitive to initialisation and to feature scaling.",k:["dbscan","gmm","pca"]},
-"hierarchical-clustering":{n:"Hierarchical clustering",t:2,r:"types",d:"Build a tree of nested groups by repeatedly merging the closest pairs, then cut the tree wherever you like.",k:["k-means","dbscan"]},
-"dbscan":{n:"DBSCAN",t:2,r:"types",d:"Cluster by density, finding arbitrarily shaped groups and labelling sparse points as noise instead of forcing them into a cluster.",k:["k-means","anomaly-detection"]},
+"linear-regression":{n:"Linear regression",t:1,r:"types",d:"Fit a straight line, or a plane, through the data. The simplest model and a genuinely useful baseline.",k:["regression-task","regression-metrics","logistic-regression"],v:"linreg"},
+"logistic-regression":{n:"Logistic regression",t:1,r:"types",d:"Linear regression pushed through a sigmoid to produce a probability between 0 and 1. The default baseline for binary classification.",x:"Interpretable, fast, well calibrated and hard to beat on tabular data with few features. Fit one before reaching for anything larger.",k:["classification","calibration","cross-entropy"],v:"logreg"},
+"decision-tree":{n:"Decision tree",t:1,r:"types",d:"A cascade of yes or no questions on feature values, ending in a prediction. Easy to read, easy to overfit.",k:["random-forest","gradient-boosting","interpretability"],v:"trees"},
+"random-forest":{n:"Random forest",t:1,r:"types",d:"Hundreds of trees, each trained on a random subset of rows and features, voting together. Robust with almost no tuning.",k:["ensemble","decision-tree","gradient-boosting"],v:"rforest"},
+"gradient-boosting":{n:"Gradient boosting (XGBoost, LightGBM, CatBoost)",t:2,r:"types",d:"Trees added one at a time, each fitted to the errors the previous ones left behind.",x:"Still the winner on most tabular problems. If your data is rows and columns rather than pixels or text, start here, not with a neural network.",k:["ensemble","random-forest","hyperparameter-search"],v:"gboost"},
+"svm":{n:"SVM",f:"Support vector machine",t:2,r:"types",d:"Find the boundary with the widest margin between classes, optionally after projecting into a higher dimensional space with a kernel.",k:["classification","knn"],v:"svm"},
+"knn":{n:"k-nearest neighbours",t:1,r:"types",d:"Classify a new point by looking at the k closest examples you have already seen. There is no training phase at all.",x:"Conceptually the ancestor of vector search: the same nearest neighbour idea, now run over learned embeddings at scale.",k:["embedding","curse-of-dimensionality","information-retrieval"],v:"knn"},
+"naive-bayes":{n:"Naive Bayes",t:2,r:"types",d:"Apply Bayes' rule while pretending the features are independent. A crude assumption that works surprisingly well for text.",k:["bayesian-network","nlp","probability"],v:"nbayes"},
+"k-means":{n:"k-means",t:1,r:"types",d:"Partition data into k groups by repeatedly assigning points to the nearest centre and moving the centres.",x:"You must pick k, it assumes round clusters of similar size, and it is sensitive to initialisation and to feature scaling.",k:["dbscan","gmm","pca"],v:"kmeans"},
+"hierarchical-clustering":{n:"Hierarchical clustering",t:2,r:"types",d:"Build a tree of nested groups by repeatedly merging the closest pairs, then cut the tree wherever you like.",k:["k-means","dbscan"],v:"hclust"},
+"dbscan":{n:"DBSCAN",t:2,r:"types",d:"Cluster by density, finding arbitrarily shaped groups and labelling sparse points as noise instead of forcing them into a cluster.",k:["k-means","anomaly-detection"],v:"dbscan"},
 "gmm":{n:"Gaussian mixture model",t:3,r:"types",d:"Model the data as a blend of Gaussian distributions, giving each point a soft probability of belonging to each cluster.",k:["k-means","probability"]},
-"pca":{n:"PCA",f:"Principal component analysis",t:1,r:"types",d:"Rotate the data onto the axes carrying the most variance, so you can keep a few dimensions and drop the rest.",k:["tsne-umap","curse-of-dimensionality","embedding"]},
-"tsne-umap":{n:"t-SNE and UMAP",t:2,r:"types",d:"Nonlinear methods for squashing high dimensional data into two dimensions for viewing.",x:"For looking, not for measuring. Distances between clusters and their apparent sizes in the plot do not carry their original meaning.",k:["pca","embedding"]},
+"pca":{n:"PCA",f:"Principal component analysis",t:1,r:"types",d:"Rotate the data onto the axes carrying the most variance, so you can keep a few dimensions and drop the rest.",k:["tsne-umap","curse-of-dimensionality","embedding"],v:"pca"},
+"tsne-umap":{n:"t-SNE and UMAP",t:2,r:"types",d:"Nonlinear methods for squashing high dimensional data into two dimensions for viewing.",x:"For looking, not for measuring. Distances between clusters and their apparent sizes in the plot do not carry their original meaning.",k:["pca","embedding"],v:"tsne"},
 "association-rules":{n:"Association rules (Apriori)",t:2,r:"types",d:"Find items that co-occur more often than chance would predict. The customers who bought this also bought that pattern.",k:["recommender-system","collaborative-filtering"]},
 "anomaly-detection":{n:"Anomaly detection",t:1,r:"types",d:"Flagging points that do not resemble the rest, using isolation forests, one class SVMs or autoencoder reconstruction error.",k:["autoencoder","fraud-detection","dbscan"]},
 "topic-modelling":{n:"Topic modelling (LDA)",t:3,r:"types",d:"Discover recurring themes across a document collection without being told in advance what the themes are.",k:["nlp","embedding","k-means"]},
-"mdp":{n:"Markov decision process",t:2,r:"types",d:"The formal frame for reinforcement learning: states, actions, transition probabilities, rewards and a discount factor.",k:["policy","q-learning","reward-function"]},
-"policy":{n:"Policy",t:1,r:"types",d:"The agent's rule for choosing an action given a state. Training a reinforcement learner means improving the policy.",k:["policy-gradient","ppo","agent"]},
-"reward-function":{n:"Reward function",t:1,r:"types",d:"The signal telling the agent how well it is doing. Everything the agent learns follows from it.",x:"Reward hacking is the standard failure: the agent maximises the number you wrote instead of the outcome you meant.",k:["ai-alignment","rlhf","exploration-exploitation"]},
-"exploration-exploitation":{n:"Exploration and exploitation",t:1,r:"types",d:"The standing dilemma: take the best known option, or try something unknown that might turn out better.",k:["bandit","q-learning","ab-test"]},
-"q-learning":{n:"Q-learning",t:2,r:"types",d:"Learn the expected long run value of taking each action in each state, then act greedily on those values.",k:["dqn","mdp","policy"]},
+"mdp":{n:"Markov decision process",t:2,r:"types",d:"The formal frame for reinforcement learning: states, actions, transition probabilities, rewards and a discount factor.",k:["policy","q-learning","reward-function"],v:"rl"},
+"policy":{n:"Policy",t:1,r:"types",d:"The agent's rule for choosing an action given a state. Training a reinforcement learner means improving the policy.",k:["policy-gradient","ppo","agent"],v:"rl"},
+"reward-function":{n:"Reward function",t:1,r:"types",d:"The signal telling the agent how well it is doing. Everything the agent learns follows from it.",x:"Reward hacking is the standard failure: the agent maximises the number you wrote instead of the outcome you meant.",k:["ai-alignment","rlhf","exploration-exploitation"],v:"rl"},
+"exploration-exploitation":{n:"Exploration and exploitation",t:1,r:"types",d:"The standing dilemma: take the best known option, or try something unknown that might turn out better.",k:["bandit","q-learning","ab-test"],v:"rl"},
+"q-learning":{n:"Q-learning",t:2,r:"types",d:"Learn the expected long run value of taking each action in each state, then act greedily on those values.",k:["dqn","mdp","policy"],v:"rl"},
 "dqn":{n:"DQN",f:"Deep Q-network",t:3,r:"types",d:"Q-learning with a neural network estimating the values, plus a replay buffer and a target network for stability. The method that learned Atari from raw pixels.",k:["q-learning","cnn"]},
 "policy-gradient":{n:"Policy gradient",t:3,r:"types",d:"Adjust the policy's parameters directly in the direction that increases expected reward, rather than learning values first.",k:["ppo","actor-critic","policy"]},
 "ppo":{n:"PPO",f:"Proximal policy optimisation",t:3,r:"types",d:"A policy gradient method that limits how far the policy may move in one update, trading some speed for a great deal of stability.",x:"The workhorse behind most RLHF pipelines, largely because it rarely blows up.",k:["policy-gradient","rlhf","actor-critic"]},
 "actor-critic":{n:"Actor-critic",t:3,r:"types",d:"Two components: an actor choosing actions and a critic estimating how good they were, guiding the actor's updates.",k:["policy-gradient","ppo"]},
 "mcts":{n:"Monte Carlo tree search",t:3,r:"types",d:"Plan by simulating many possible futures and expanding the branches that look most promising. The planning half of AlphaGo.",k:["search-algorithm","minimax","planning"]},
 "bandit":{n:"Multi-armed bandit",t:2,r:"types",d:"The simplest reinforcement setting: repeated one shot choices with no state to carry forward.",x:"The right frame for an A/B test that adapts while it runs, shifting traffic toward the winner instead of waiting for the end.",k:["ab-test","exploration-exploitation"]},
-"rlhf":{n:"RLHF and preference tuning",t:2,r:"types",d:"Train a reward model on human comparisons of outputs, then optimise the language model against it. How raw pretrained models become usable assistants.",x:"Direct preference optimisation and its relatives now reach much of the same effect without a separate reward model and reinforcement loop.",k:["llm","ppo","human-eval","ai-alignment"]},
+"rlhf":{n:"RLHF and preference tuning",t:2,r:"types",d:"Train a reward model on human comparisons of outputs, then optimise the language model against it. How raw pretrained models become usable assistants.",x:"Direct preference optimisation and its relatives now reach much of the same effect without a separate reward model and reinforcement loop.",k:["llm","ppo","human-eval","ai-alignment"],v:"rlhf"},
 "self-supervised":{n:"Self-supervised learning",t:2,r:"types",d:"Create the labels from the data itself by hiding part of the input and predicting it. The trick that unlocked pretraining at internet scale.",k:["pretraining","llm","semi-supervised"]},
 "semi-supervised":{n:"Semi-supervised learning",t:2,r:"types",d:"Learn from a small labelled set plus a large unlabelled one, using the unlabelled data to shape the decision boundary.",k:["self-supervised","active-learning","annotation"]},
 "active-learning":{n:"Active learning",t:3,r:"types",d:"The model picks which examples it wants labelled next, concentrating scarce annotation effort where it changes the model most.",k:["annotation","human-in-the-loop","semi-supervised"]},
@@ -595,17 +621,17 @@ const T = {
 "data-augmentation":{n:"Data augmentation",t:2,r:"blocks",d:"Manufacturing extra training examples by transforming existing ones: flips, crops, noise, paraphrase, synonym swaps.",k:["overfitting","synthetic-data","cnn"]},
 "data-pipeline":{n:"Data pipeline",t:2,r:"blocks",d:"The plumbing that moves data from source to model: ingestion, cleaning, joining, feature computation and versioning.",k:["feature-engineering","mlops","data-drift"]},
 "feature-engineering":{n:"Feature engineering",t:1,r:"blocks",d:"Reshaping raw data into inputs a model can use well: ratios, aggregations, time deltas, encodings.",x:"Deep learning removed much of this for images and text. For tabular business data it is still where most of the gains live.",k:["feature","gradient-boosting","data-leakage"]},
-"sampling":{n:"Sampling",t:2,r:"blocks",d:"Choosing which rows to train on and in what proportion, including stratified, weighted and time aware schemes.",k:["class-imbalance","split","statistics"]},
+"sampling":{n:"Sampling",t:2,r:"blocks",d:"Choosing which rows to train on and in what proportion, including stratified, weighted and time aware schemes.",k:["class-imbalance","split","statistics"],v:"sampling"},
 "synthetic-data":{n:"Synthetic data",t:3,r:"blocks",d:"Generated rather than collected examples, used to fill gaps, cover rare cases, or avoid handling sensitive records.",k:["data-augmentation","pii-governance","generative-media"]},
 "data-drift":{n:"Data drift",t:2,r:"blocks",d:"The live input distribution moving away from the training distribution. The first thing to check when a stable model starts sliding.",k:["concept-drift","model-monitoring"]},
 "pii-governance":{n:"PII and data governance",t:1,r:"blocks",d:"Rules for what personal data may be collected, kept, used for training and shown back. Consent, retention and deletion are design constraints, not paperwork.",k:["ai-regulation","federated-learning","ai-governance"]},
-"optimizer":{n:"Optimiser (SGD, Adam, AdamW)",t:1,r:"blocks",d:"The rule that turns gradients into weight updates. Adam and AdamW adapt the step size per parameter and are the usual defaults.",k:["gradient-descent","learning-rate","backpropagation"]},
+"optimizer":{n:"Optimiser (SGD, Adam, AdamW)",t:1,r:"blocks",d:"The rule that turns gradients into weight updates. Adam and AdamW adapt the step size per parameter and are the usual defaults.",k:["gradient-descent","learning-rate","backpropagation"],v:"graddesc"},
 "learning-rate":{n:"Learning rate",t:1,r:"blocks",d:"How big each update step is. Too high and training diverges, too low and it crawls or gets stuck.",x:"The single hyperparameter most worth tuning. Warmup followed by cosine decay is a strong default schedule for transformers.",k:["optimizer","hyperparameter","normalization"]},
 "batch-size":{n:"Batch size",t:2,r:"blocks",d:"How many examples are processed before each weight update. Larger batches are steadier and faster per epoch but need more memory.",k:["vram","epoch","distributed-training"]},
 "epoch":{n:"Epoch",t:1,r:"blocks",d:"One full pass over the training data.",k:["batch-size","early-stopping"]},
 "early-stopping":{n:"Early stopping",t:2,r:"blocks",d:"Halt training when validation performance stops improving, keeping the best checkpoint rather than the last one.",k:["overfitting","regularization","split"]},
 "weight-init":{n:"Weight initialisation",t:3,r:"blocks",d:"The starting values of the parameters. Poor initialisation can make a deep network fail to train at all.",k:["normalization","vanishing-gradient"]},
-"cross-entropy":{n:"Cross-entropy loss",t:2,r:"blocks",d:"The standard loss for classification. It punishes confident wrong answers far more heavily than uncertain ones.",k:["loss-function","classification","calibration"]},
+"cross-entropy":{n:"Cross-entropy loss",t:2,r:"blocks",d:"The standard loss for classification. It punishes confident wrong answers far more heavily than uncertain ones.",k:["loss-function","classification","calibration"],v:"xentropy"},
 "mse-loss":{n:"MSE and MAE loss",t:2,r:"blocks",d:"Regression losses. Squared error punishes large misses hard, absolute error is steadier when outliers are common.",k:["loss-function","regression-metrics"]},
 "hyperparameter-search":{n:"Hyperparameter search",t:2,r:"blocks",d:"Systematically trying configurations with grid, random or Bayesian search over the space.",x:"Random search beats grid search for the same budget, because only a few hyperparameters usually matter and random covers each of them more finely.",k:["hyperparameter","cross-validation","gradient-boosting"]},
 "gpu":{n:"GPU",t:1,r:"blocks",d:"The parallel processor that made deep learning practical, running thousands of matrix operations at once.",k:["vram","cuda","tpu"]},
@@ -618,25 +644,25 @@ const T = {
 "inference-vs-training":{n:"Inference versus training",t:1,r:"blocks",d:"Training fits the parameters once and is expensive. Inference runs the finished model on new inputs and is what you pay for forever.",x:"Lifetime inference cost usually dwarfs training cost. Design for it early rather than after launch.",k:["latency-throughput","quantization","distillation"]},
 "latency-throughput":{n:"Latency and throughput",t:2,r:"blocks",d:"Latency is how long one request takes, throughput is how many you serve per second. Batching improves one and harms the other.",k:["inference-vs-training","batch-size","edge-inference"]},
 "edge-inference":{n:"Edge inference",t:2,r:"blocks",d:"Running the model on the device (phone, camera, vehicle, sensor) rather than in a data centre, for privacy, cost or connectivity.",k:["quantization","crop-disease","federated-learning"]},
-"accuracy":{n:"Accuracy",t:1,r:"blocks",d:"The share of predictions that were right. Easy to read and misleading whenever the classes are imbalanced.",k:["precision-recall","class-imbalance","confusion-matrix"]},
-"precision-recall":{n:"Precision and recall",t:1,r:"blocks",d:"Precision: of the things you flagged, how many were real. Recall: of the real things, how many you caught.",x:"The trade is a product decision, not a modelling one. Review capacity, medical follow up cost and moderation policy each pick a different point.",k:["f1","roc-auc","class-imbalance"]},
-"f1":{n:"F1 score",t:1,r:"blocks",d:"The harmonic mean of precision and recall, for when you want one number and care about both.",k:["precision-recall","accuracy"]},
-"roc-auc":{n:"ROC AUC and PR AUC",t:2,r:"blocks",d:"Threshold free summaries of ranking quality.",x:"ROC AUC flatters imbalanced problems because true negatives are plentiful. PR AUC is the honest one when positives are rare.",k:["precision-recall","class-imbalance","ranking"]},
-"confusion-matrix":{n:"Confusion matrix",t:1,r:"blocks",d:"The full table of predicted against actual classes. Every other classification metric is a summary of it.",k:["accuracy","precision-recall"]},
-"regression-metrics":{n:"RMSE, MAE and R squared",t:1,r:"blocks",d:"Regression scores: RMSE punishes big misses, MAE treats all errors equally, R squared reports the share of variance explained.",k:["regression-task","mse-loss"]},
+"accuracy":{n:"Accuracy",t:1,r:"blocks",d:"The share of predictions that were right. Easy to read and misleading whenever the classes are imbalanced.",k:["precision-recall","class-imbalance","confusion-matrix"],v:"confusion"},
+"precision-recall":{n:"Precision and recall",t:1,r:"blocks",d:"Precision: of the things you flagged, how many were real. Recall: of the real things, how many you caught.",x:"The trade is a product decision, not a modelling one. Review capacity, medical follow up cost and moderation policy each pick a different point.",k:["f1","roc-auc","class-imbalance"],v:"sensspec"},
+"f1":{n:"F1 score",t:1,r:"blocks",d:"The harmonic mean of precision and recall, for when you want one number and care about both.",k:["precision-recall","accuracy"],v:"sensspec"},
+"roc-auc":{n:"ROC AUC and PR AUC",t:2,r:"blocks",d:"Threshold free summaries of ranking quality.",x:"ROC AUC flatters imbalanced problems because true negatives are plentiful. PR AUC is the honest one when positives are rare.",k:["precision-recall","class-imbalance","ranking"],v:"rocauc"},
+"confusion-matrix":{n:"Confusion matrix",t:1,r:"blocks",d:"The full table of predicted against actual classes. Every other classification metric is a summary of it.",k:["accuracy","precision-recall"],v:"confusion"},
+"regression-metrics":{n:"RMSE, MAE and R squared",t:1,r:"blocks",d:"Regression scores: RMSE punishes big misses, MAE treats all errors equally, R squared reports the share of variance explained.",k:["regression-task","mse-loss"],v:"rsquared"},
 "calibration":{n:"Calibration",t:3,r:"blocks",d:"Whether a stated 70 percent confidence really means right about 70 percent of the time. Separate from accuracy, and often worse than assumed.",x:"It matters enormously wherever a human or a downstream rule acts on the probability rather than the label.",k:["logistic-regression","cross-entropy","human-in-the-loop"]},
 "perplexity":{n:"Perplexity",t:3,r:"blocks",d:"How surprised a language model is by held out text. Lower is better, and it correlates only loosely with usefulness.",k:["llm","benchmark","human-eval"]},
 "bleu-rouge":{n:"BLEU, ROUGE and friends",t:3,r:"blocks",d:"Overlap based scores for translation and summarisation. Cheap, reproducible, and weakly related to whether a human finds the output good.",k:["human-eval","benchmark","nlp"]},
 "human-eval":{n:"Human evaluation",t:2,r:"blocks",d:"Structured rating by people, with a rubric and multiple raters. Still the ground truth for generative systems.",x:"Budget for it. Pairwise comparison is more reliable than absolute scoring, and agreement between raters is the number to report.",k:["rlhf","annotation","ab-test"]},
-"ab-test":{n:"A/B test",t:1,r:"blocks",d:"Randomly split live traffic between variants and measure the outcome you actually care about. The only evaluation that captures real user behaviour.",k:["bandit","statistics","model-monitoring"]},
+"ab-test":{n:"A/B test",t:1,r:"blocks",d:"Randomly split live traffic between variants and measure the outcome you actually care about. The only evaluation that captures real user behaviour.",k:["bandit","statistics","model-monitoring"],v:"pvalues"},
 "fairness-metrics":{n:"Fairness metrics",t:2,r:"blocks",d:"Measures of whether outcomes differ across groups: demographic parity, equal opportunity, equalised odds.",x:"They are mathematically incompatible with one another in the general case. Choosing which to satisfy is a policy decision that has to be made explicitly.",k:["algorithmic-bias","responsible-ai","credit-scoring"]},
 "benchmark":{n:"Benchmarks",t:2,r:"blocks",d:"A shared dataset and metric for comparing systems.",x:"Watch for contamination, where the test set has leaked into pretraining data, and for saturation, where every model scores near the ceiling and the benchmark stops discriminating.",k:["human-eval","perplexity","arxiv"]},
 
 /* ── R6 Applications ── */
 "medical-imaging":{n:"Medical imaging",t:2,r:"apps",d:"Detection and segmentation on X-ray, CT, MRI and pathology slides, usually as a second reader working alongside a clinician.",x:"Evaluate per subgroup and per scanner. A model that is excellent overall and weak on one device or one demographic is not deployable.",k:["cnn","computer-vision","fairness-metrics"]},
 "clinical-nlp":{n:"Clinical NLP",t:2,r:"apps",d:"Pulling structure out of free text notes: diagnoses, medications, findings, and codes for billing.",k:["nlp","document-extraction","pii-governance"]},
-"drug-discovery":{n:"Drug discovery",t:3,r:"apps",d:"Screening and generating candidate molecules, predicting binding and toxicity, and prioritising the few worth synthesising.",k:["gnn","protein-structure","diffusion-model"]},
-"protein-structure":{n:"Protein structure prediction",t:3,r:"apps",d:"Predicting a protein's folded shape from its sequence, the problem AlphaFold largely solved and which reshaped structural biology.",k:["drug-discovery","transformer"]},
+"drug-discovery":{n:"Drug discovery",t:3,r:"apps",d:"Screening and generating candidate molecules, predicting binding and toxicity, and prioritising the few worth synthesising.",k:["gnn","protein-structure","diffusion-model"],v:"alphafold"},
+"protein-structure":{n:"Protein structure prediction",t:3,r:"apps",d:"Predicting a protein's folded shape from its sequence, the problem AlphaFold largely solved and which reshaped structural biology.",k:["drug-discovery","transformer"],v:"alphafold"},
 "risk-prediction":{n:"Clinical risk prediction",t:2,r:"apps",d:"Estimating who is likely to deteriorate, be readmitted or miss an appointment, so scarce attention goes to the right patients.",k:["calibration","gradient-boosting","human-in-the-loop"]},
 "perception-stack":{n:"Perception stack",t:2,r:"apps",d:"The layered pipeline turning raw sensor data into tracked objects: detection, classification, tracking and prediction.",k:["sensor-fusion","cnn","path-planning"]},
 "sensor-fusion":{n:"Sensor fusion",t:3,r:"apps",d:"Combining camera, radar, lidar and inertial data so the weaknesses of one sensor are covered by another.",k:["perception-stack","slam"]},
@@ -651,7 +677,7 @@ const T = {
 "recommender-system":{n:"Recommender system",t:1,r:"apps",d:"Deciding what to show next from a very large catalogue, usually as a cheap retrieval stage followed by an expensive ranking stage.",x:"Optimise the metric you can defend. Engagement is easy to measure and diverges from user welfare faster than most teams expect.",k:["collaborative-filtering","two-tower","ranking"]},
 "collaborative-filtering":{n:"Collaborative filtering",t:2,r:"apps",d:"Recommending on the basis that people who agreed before will agree again, with no need to understand the items themselves.",k:["recommender-system","association-rules","embedding"]},
 "two-tower":{n:"Two-tower retrieval",t:3,r:"apps",d:"One encoder for users and one for items, both producing vectors in a shared space, so retrieval becomes a nearest neighbour lookup.",k:["embedding","knn","ranking"]},
-"generative-media":{n:"Generative media",t:2,r:"apps",d:"Producing images, video, music, voice and text as production assets, with provenance and rights as live constraints.",k:["diffusion-model","gan","ai-regulation"]},
+"generative-media":{n:"Generative media",t:2,r:"apps",d:"Producing images, video, music, voice and text as production assets, with provenance and rights as live constraints.",k:["diffusion-model","gan","ai-regulation"],v:"diffusion"},
 "super-resolution":{n:"Super-resolution",t:3,r:"apps",d:"Reconstructing plausible detail when upscaling images or video, including restoration of old footage.",k:["cnn","diffusion-model"]},
 "fraud-detection":{n:"Fraud detection",t:1,r:"apps",d:"Spotting anomalous transactions in real time, increasingly with graph features that reveal rings rather than lone actors.",x:"Extreme class imbalance plus an adversary who adapts. Expect to retrain often and to tune the threshold around review capacity.",k:["anomaly-detection","gnn","class-imbalance"]},
 "credit-scoring":{n:"Credit scoring",t:2,r:"apps",d:"Estimating repayment risk under regulation that usually demands an explainable and auditable model.",k:["logistic-regression","fairness-metrics","model-risk"]},
@@ -664,8 +690,8 @@ const T = {
 "yield-prediction":{n:"Yield prediction",t:2,r:"apps",d:"Combining weather, soil, satellite and management data to forecast harvest volume.",k:["forecasting","remote-sensing","gradient-boosting"]},
 "crop-disease":{n:"Crop disease detection",t:2,r:"apps",d:"Identifying pests and disease from leaf photographs, often on a phone in the field with an on device model.",k:["cnn","edge-inference","transfer-learning"]},
 "agri-robotics":{n:"Agricultural robotics",t:3,r:"apps",d:"Machines that see and act in the field: selective weeding, thinning and robotic harvesting.",k:["robotics","perception-stack"]},
-"mlops":{n:"MLOps",t:1,r:"apps",d:"The discipline of getting models into production and keeping them healthy: versioning, continuous integration, deployment, monitoring and rollback.",x:"Most projects that fail do not fail at modelling. They fail because nobody owned the retraining, the monitoring or the rollback path.",k:["model-monitoring","model-registry","docker"]},
-"model-monitoring":{n:"Model monitoring",t:2,r:"apps",d:"Watching inputs, predictions and outcomes in production so drift, breakage and degradation are caught before users report them.",k:["data-drift","concept-drift","mlops"]},
+"mlops":{n:"MLOps",t:1,r:"apps",d:"The discipline of getting models into production and keeping them healthy: versioning, continuous integration, deployment, monitoring and rollback.",x:"Most projects that fail do not fail at modelling. They fail because nobody owned the retraining, the monitoring or the rollback path.",k:["model-monitoring","model-registry","docker"],v:"mlops"},
+"model-monitoring":{n:"Model monitoring",t:2,r:"apps",d:"Watching inputs, predictions and outcomes in production so drift, breakage and degradation are caught before users report them.",k:["data-drift","concept-drift","mlops"],v:"mlops"},
 "human-in-the-loop":{n:"Human in the loop",t:1,r:"apps",d:"Designing the system so a person reviews, corrects or approves the cases the model is least sure about.",x:"Route by confidence and feed the corrections back into training. That loop is usually worth more than another point of offline accuracy.",k:["calibration","active-learning","automated-scoring"]},
 "shadow-deployment":{n:"Shadow deployment",t:2,r:"apps",d:"Running a new model alongside the live one on real traffic without acting on its output, to compare before switching.",k:["ab-test","mlops","model-registry"]},
 "model-registry":{n:"Model registry",t:2,r:"apps",d:"The catalogue of model versions with lineage, metrics, approvals, and the ability to roll back to a known good one.",k:["mlops","model-card","git"]},
@@ -673,14 +699,14 @@ const T = {
 "ai-regulation":{n:"AI regulation",t:2,r:"apps",d:"Rules governing deployment, risk tier and disclosure, the EU AI Act being the most consequential example so far.",k:["ai-governance","pii-governance","responsible-ai"]},
 
 /* ── R7 The journey ── */
-"linear-algebra":{n:"Linear algebra",t:1,r:"journey",d:"Vectors, matrices and their products. Everything a network does is a chain of these operations.",k:["calculus","pca","embedding"]},
-"calculus":{n:"Calculus",t:1,r:"journey",d:"Derivatives and the chain rule, which is exactly what backpropagation computes.",k:["backpropagation","gradient-descent"]},
-"probability":{n:"Probability",t:1,r:"journey",d:"Distributions, conditional probability and Bayes' rule. The language in which uncertainty is expressed.",k:["statistics","bayesian-network","calibration"]},
-"statistics":{n:"Statistics",t:1,r:"journey",d:"Sampling, estimation, significance and confidence. What keeps you from believing noise.",x:"The most common gap in self taught practitioners, and the one that causes the most expensive mistakes.",k:["ab-test","cross-validation","sampling"]},
+"linear-algebra":{n:"Linear algebra",t:1,r:"journey",d:"Vectors, matrices and their products. Everything a network does is a chain of these operations.",k:["calculus","pca","embedding"],v:"linalg"},
+"calculus":{n:"Calculus",t:1,r:"journey",d:"Derivatives and the chain rule, which is exactly what backpropagation computes.",k:["backpropagation","gradient-descent"],v:"calculus"},
+"probability":{n:"Probability",t:1,r:"journey",d:"Distributions, conditional probability and Bayes' rule. The language in which uncertainty is expressed.",k:["statistics","bayesian-network","calibration"],v:"probdist"},
+"statistics":{n:"Statistics",t:1,r:"journey",d:"Sampling, estimation, significance and confidence. What keeps you from believing noise.",x:"The most common gap in self taught practitioners, and the one that causes the most expensive mistakes.",k:["ab-test","cross-validation","sampling"],v:"pvalues"},
 "python":{n:"Python",t:1,r:"journey",d:"The field's working language. Comfort with functions, classes, environments and packaging goes a long way.",k:["numpy-pandas","scikit-learn","git"]},
 "numpy-pandas":{n:"NumPy and pandas",t:1,r:"journey",d:"Array maths and dataframes. Most of a real project is spent here rather than in the model.",k:["python","feature-engineering"]},
 "scikit-learn":{n:"scikit-learn",t:1,r:"journey",d:"The standard library for classical ML: a consistent fit and predict interface, preprocessing, model selection and metrics.",x:"Learn Pipeline and ColumnTransformer early. They are what stop preprocessing from leaking across your splits.",k:["data-leakage","cross-validation","gradient-boosting"]},
-"pytorch":{n:"PyTorch",t:1,r:"journey",d:"The dominant deep learning framework in research and, increasingly, in production.",k:["cuda","tensorflow-jax","gpu"]},
+"pytorch":{n:"PyTorch",t:1,r:"journey",d:"The dominant deep learning framework in research and, increasingly, in production.",k:["cuda","tensorflow-jax","gpu"],v:"pytorch"},
 "tensorflow-jax":{n:"TensorFlow and JAX",t:2,r:"journey",d:"The main alternatives: TensorFlow with a mature serving and mobile story, JAX favoured for large scale research.",k:["pytorch","tpu","distributed-training"]},
 "notebooks":{n:"Notebooks (Jupyter, Colab)",t:1,r:"journey",d:"Fast iteration with visible intermediate results, and free GPU access on Colab.",k:["python","git"]},
 "git":{n:"Git",t:1,r:"journey",d:"Version control. Non negotiable the moment more than one person, or more than one experiment, is involved.",k:["docker","model-registry","mlops"]},
@@ -698,6 +724,68 @@ const T = {
 "mlops-engineer":{n:"MLOps engineer",t:2,r:"journey",d:"Owns the infrastructure, deployment and reliability of models in production.",k:["mlops","model-registry","model-monitoring"]},
 "ai-product":{n:"AI product manager",t:2,r:"journey",d:"Decides what to build, defines acceptable error, and designs the interface around a system that is confidently wrong sometimes.",k:["human-in-the-loop","ab-test","model-card"]},
 "responsible-ai":{n:"Responsible AI practitioner",t:2,r:"journey",d:"Assesses impact, fairness, safety and compliance before and after launch, and holds the authority to say no.",k:["fairness-metrics","ai-governance","ai-regulation"]}
+};
+
+
+/* ═══ VIDEO LIBRARY ══════════════════════════════════════
+   Every id below was verified against the YouTube oEmbed API:
+   the returned title and channel had to match the intended
+   topic before the entry was kept. Terms reference these by key,
+   so one good video can serve several related terms.
+   id=video id, t=title, by=channel, long=deep dive (over ~30 min) */
+const V = {
+"nn-intro":{id:"aircAruvnKk",t:"But what is a neural network?",by:"3Blue1Brown"},
+"backprop":{id:"Ilg3gGewQ5U",t:"Backpropagation, intuitively",by:"3Blue1Brown"},
+"graddesc":{id:"IHZwWFHWa-w",t:"Gradient descent, how neural networks learn",by:"3Blue1Brown"},
+"attention":{id:"eMlx5fFNoYc",t:"Attention in transformers, step-by-step",by:"3Blue1Brown"},
+"transformer":{id:"wjZofJX0v4M",t:"Transformers, the tech behind LLMs",by:"3Blue1Brown"},
+"linalg":{id:"fNk_zzaMoSs",t:"Vectors | Essence of linear algebra",by:"3Blue1Brown"},
+"calculus":{id:"WUvTyaaNkzM",t:"The essence of calculus",by:"3Blue1Brown"},
+"diffusion":{id:"iv-5mZ_9CPY",t:"But how do AI images and videos actually work?",by:"Welch Labs for 3Blue1Brown"},
+"xval":{id:"fSytzGwwBVw",t:"Cross Validation",by:"StatQuest"},
+"confusion":{id:"Kdsp6soqA7o",t:"The Confusion Matrix",by:"StatQuest"},
+"sensspec":{id:"vP06aMoz4v8",t:"Sensitivity and Specificity",by:"StatQuest"},
+"biasvar":{id:"EuBBz3bI-aA",t:"Bias and Variance",by:"StatQuest"},
+"rocauc":{id:"4jRBRDbJemM",t:"ROC and AUC, Clearly Explained",by:"StatQuest"},
+"xentropy":{id:"6ArSys5qHAU",t:"Neural Networks Part 6: Cross Entropy",by:"StatQuest"},
+"ridge":{id:"Q81RR3yKn30",t:"Regularization Part 1: Ridge (L2) Regression",by:"StatQuest"},
+"pca":{id:"HMOI_lkzW08",t:"PCA main ideas in only 5 minutes",by:"StatQuest"},
+"tsne":{id:"NEaUSP4YerM",t:"t-SNE, Clearly Explained",by:"StatQuest"},
+"hclust":{id:"7xHsRkOdVwo",t:"Hierarchical Clustering",by:"StatQuest"},
+"kmeans":{id:"4b5d3muPQmA",t:"K-means clustering",by:"StatQuest"},
+"dbscan":{id:"RDZUdRSDOok",t:"Clustering with DBSCAN",by:"StatQuest"},
+"knn":{id:"HVXime0nQeI",t:"K-nearest neighbors, Clearly Explained",by:"StatQuest"},
+"nbayes":{id:"O2L2Uv9pdDA",t:"Naive Bayes, Clearly Explained",by:"StatQuest"},
+"trees":{id:"_L39rN6gz7Y",t:"Decision and Classification Trees",by:"StatQuest"},
+"rforest":{id:"J4Wdy0Wc_xQ",t:"Random Forests: Building, Using and Evaluating",by:"StatQuest"},
+"gboost":{id:"3CC4N4z3GJc",t:"Gradient Boost Part 1: Regression Main Ideas",by:"StatQuest"},
+"svm":{id:"efR1C6CvhmE",t:"Support Vector Machines: Main Ideas",by:"StatQuest"},
+"logreg":{id:"yIYKR4sgzI8",t:"Logistic Regression",by:"StatQuest"},
+"linreg":{id:"PaFPbb66DxQ",t:"The Main Ideas of Fitting a Line to Data",by:"StatQuest"},
+"rlhf":{id:"qPN_XZcJf_s",t:"Reinforcement Learning with Human Feedback (RLHF)",by:"StatQuest"},
+"nnmain":{id:"CqOfi41LfDw",t:"The Essential Main Ideas of Neural Networks",by:"StatQuest"},
+"relu":{id:"68BZ5f7P94E",t:"Neural Networks Pt. 3: ReLU In Action",by:"StatQuest"},
+"cnn":{id:"HGwBXDKFk9I",t:"Image Classification with Convolutional Neural Networks",by:"StatQuest"},
+"rnn":{id:"AsNTP8Kwu80",t:"Recurrent Neural Networks (RNNs), Clearly Explained",by:"StatQuest"},
+"lstm":{id:"YCzL96nL7j0",t:"Long Short-Term Memory (LSTM), Clearly Explained",by:"StatQuest"},
+"word2vec":{id:"viZrOnJclY0",t:"Word Embedding and Word2Vec",by:"StatQuest"},
+"decoderonly":{id:"bQ5BoolX9Ag",t:"Decoder-Only Transformers, ChatGPT's Transformer",by:"StatQuest"},
+"rsquared":{id:"2AQKmw14mHM",t:"R-squared, Clearly Explained",by:"StatQuest"},
+"mlintro":{id:"Gv9_4yMHFhI",t:"A Gentle Introduction to Machine Learning",by:"StatQuest"},
+"probdist":{id:"oI3hZJqXJuc",t:"The Main Ideas behind Probability Distributions",by:"StatQuest"},
+"pvalues":{id:"vemZtEM63GY",t:"p-values: What they are and how to interpret them",by:"StatQuest"},
+"rl":{id:"Z-T0iJEXiwM",t:"Reinforcement Learning: Essential Concepts",by:"StatQuest"},
+"pytorch":{id:"FHdlXe1bSe4",t:"The StatQuest Introduction to PyTorch",by:"StatQuest"},
+"adaboost":{id:"LsK-xG1cLYA",t:"AdaBoost, Clearly Explained",by:"StatQuest"},
+"sampling":{id:"XLCWeSVzHUU",t:"Sampling from a Distribution",by:"StatQuest"},
+"gan":{id:"Sw9r8CL98N0",t:"Generative Adversarial Networks (GANs)",by:"Computerphile"},
+"rag":{id:"T-D1OfcDW1M",t:"What is Retrieval-Augmented Generation (RAG)?",by:"IBM Technology"},
+"mlops":{id:"OejCJL2EC3k",t:"What is MLOps?",by:"IBM Technology"},
+"agents":{id:"F8NKVhkZZWI",t:"What are AI Agents?",by:"IBM Technology"},
+"alphafold":{id:"KpedmJdrTpY",t:"Protein folding explained",by:"Google DeepMind"},
+"turing":{id:"3wLqsRLvV-c",t:"The Turing test: Can a computer pass for a human?",by:"TED-Ed"},
+"alignment":{id:"PYylPRX6z4Q",t:"Training AI Without Writing A Reward Function",by:"Robert Miles AI Safety"},
+"tokenizer":{id:"zduSFxRajkE",t:"Let's build the GPT Tokenizer",by:"Andrej Karpathy",long:1},
 };
 
 /* ═══ REGIONS ══════════════════════════════════════════════ */
@@ -724,7 +812,7 @@ const R = [
 },
 {
  id:"ml", code:"R2", name:"Machine Learning", plate:"Machine Learning", alias:"ML",
- role:"Inner scope", hue:"--h-ml",
+ role:"Inner scope", hue:"--h-ml", v:"mlintro",
  geo:{k:"e",cx:420,cy:322,rx:255,ry:170}, lab:{x:420,y:205,s:17}, gloss:{x:420,y:226,t:"learning from examples"}, cod:{x:420,y:184},
  plain:"Machine learning is the part of AI where <b>you do not write the rules</b>. You show the system enough examples, it works out the pattern connecting inputs to answers, and then it applies that pattern to cases it has never seen.",
  deep:"ML fits a function from data by minimising a loss over a hypothesis class. The whole discipline is a negotiation with <b>generalisation</b>: regularisation, validation, ensembling and early stopping all exist to stop the model fitting the sample rather than the underlying process. Choosing a model is really choosing an inductive bias, and when data is scarce that bias does more of the work than the data does.",
@@ -743,7 +831,7 @@ const R = [
 },
 {
  id:"dl", code:"R3", name:"Deep Learning", plate:"Deep Learning", alias:"DL",
- role:"Innermost scope", hue:"--h-dl",
+ role:"Innermost scope", hue:"--h-dl", v:"nn-intro",
  geo:{k:"e",cx:420,cy:352,rx:158,ry:102}, lab:{x:420,y:348,s:15}, gloss:{x:420,y:368,t:"many layered networks"}, cod:{x:420,y:327},
  plain:"Deep learning is machine learning done with neural networks that stack <b>many layers</b>. Each layer builds on the one before, so early layers find edges and sounds while later ones find faces and phrases. It is what made image, speech and language systems suddenly work.",
  deep:"Deep learning replaces hand designed features with representations learned end to end by gradient descent through many layers. <b>Architecture encodes the prior</b>: convolution assumes locality and translation invariance, recurrence assumes sequential dependence, attention assumes any position may matter to any other. The transformer's real contribution was parallelism, which converted model quality into a compute and data budget, and scaling laws, pretraining economics and the fine tuning market all follow from that.",
@@ -764,7 +852,7 @@ const R = [
 },
 {
  id:"types", code:"R4", name:"Types of Learning", plate:"Types of Learning", alias:"Paradigms",
- role:"Method", hue:"--h-types",
+ role:"Method", hue:"--h-types", v:"rl",
  geo:{k:"r",x:800,y:56,w:172,h:150}, lab:{x:886,y:118,s:14.5,wrap:["Types of","Learning"]}, gloss:{x:886,y:160,t:"four setups"}, cod:{x:886,y:82},
  plain:"There are a few different ways a machine can learn. It can study <b>with the answers provided</b>, explore data with <b>no answers at all</b>, or learn by <b>trying things and collecting rewards</b>. Which setup you choose depends on what kind of data you can actually get hold of.",
  deep:"The paradigms are distinguished by what supervision signal exists. Supervised learning has paired inputs and targets. Unsupervised learning has structure only. Reinforcement learning has delayed, sparse, evaluative feedback from an environment that reacts to the agent. <b>Self supervised learning is the pragmatic middle</b> that powers modern pretraining: labels are manufactured from the data itself, which is the only reason unlabelled scale became usable.",
@@ -802,7 +890,7 @@ const R = [
 },
 {
  id:"apps", code:"R6", name:"Real-World Applications", plate:"Applications", alias:"In the field",
- role:"Practice", hue:"--h-apps",
+ role:"Practice", hue:"--h-apps", v:"mlops",
  geo:{k:"r",x:800,y:396,w:172,h:150}, lab:{x:886,y:466,s:14.5,wrap:["Applications"]}, gloss:{x:886,y:492,t:"where it lands"}, cod:{x:886,y:422},
  plain:"The same handful of techniques turn up everywhere, wearing different clothes. <b>Recognising an image, ranking a list, predicting a number and pulling fields out of a document</b> cover a striking share of real deployments across every industry on this map.",
  deep:"Domains differ less in method than in <b>constraint</b>. Healthcare and finance are regulated, so explainability, audit trail and model risk governance shape the architecture. Transport is real time and safety critical, so latency budgets and sensor redundancy dominate. Consumer media optimises engagement metrics that diverge from user welfare. What separates a shipped system from a notebook is the surrounding apparatus: monitoring, human review routing, rollback, and a named owner for retraining.",
@@ -997,6 +1085,24 @@ function termChip(slug, home){
     '"></span>' + esc(t.n) + away + '</button>';
 }
 
+function playIcon(){
+  return '<span class="play"><svg viewBox="0 0 12 14" width="10" height="12" aria-hidden="true">' +
+         '<path d="M1 0 L12 7 L1 14 Z" fill="currentColor"/></svg></span>';
+}
+function watchHTML(key, extraClass){
+  const v = V[key];
+  if(!v) return "";
+  return '<a class="watch ' + (extraClass || "") + '" href="https://www.youtube.com/watch?v=' + v.id +
+    '" target="_blank" rel="noopener noreferrer">' + playIcon() +
+    '<span><span class="wt">' + esc(v.t) + '</span><span class="wb">' + esc(v.by) +
+    (v.long ? ' &middot; deep dive' : '') + '</span></span></a>';
+}
+function findHTML(name){
+  return '<a class="watch-find" href="https://www.youtube.com/results?search_query=' +
+    encodeURIComponent(name + " explained") +
+    '" target="_blank" rel="noopener noreferrer">Search YouTube for this term</a>';
+}
+
 function entryHTML(slug){
   const t = T[slug];
   if(!t) return "";
@@ -1011,7 +1117,8 @@ function entryHTML(slug){
     '<div class="meta"><span class="badge">' + TIER_NAME[t.t] + '</span>' +
     '<button type="button" class="badge home" data-jump="' + t.r + '">' + home.code + ' ' + esc(home.name) + '</button>' +
     '<button type="button" class="close" data-close="1" aria-label="Close term">&#215;</button></div></div>' +
-    '<p class="def">' + esc(t.d) + '</p>' + note +
+    '<p class="def">' + esc(t.d) + '</p>' +
+    (t.v && V[t.v] ? watchHTML(t.v) : findHTML(t.n)) + note +
     (rel ? '<div class="rel"><span class="lb">See also</span>' + rel + '</div>' : "") +
     '</div>';
 }
@@ -1040,6 +1147,7 @@ function renderDossier(){
     '<h2 class="d-title">' + esc(r.name) + '</h2>' +
     '<div class="d-alias">' + esc(r.alias) + '</div>' +
     '<p class="d-lead">' + lead + '</p>' +
+    (r.v && V[r.v] ? watchHTML(r.v, "d-watch") : "") +
     '<section class="sec"><div class="sec-head">In practice</div><div class="facets">' + facets + '</div></section>' +
     '<section class="sec"><div class="sec-head">Terminology</div>' +
       '<div id="entry">' + (openSlug ? entryHTML(openSlug) : "") + '</div>' + clusters + '</section>' +
